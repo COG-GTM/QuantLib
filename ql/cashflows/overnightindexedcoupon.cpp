@@ -30,6 +30,7 @@
 #include <ql/termstructures/yieldtermstructure.hpp>
 #include <ql/time/calendars/weekendsonly.hpp>
 #include <ql/utilities/vectors.hpp>
+#include <optional>
 #include <utility>
 #include <algorithm>
 #include <type_traits>

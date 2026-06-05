@@ -31,6 +31,7 @@
 #include <ql/cashflow.hpp>
 #include <ql/interestrate.hpp>
 #include <ql/shared_ptr.hpp>
+#include <optional>
 
 namespace QuantLib {
 

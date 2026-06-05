@@ -30,7 +30,7 @@
 #include <ql/cashflow.hpp>
 #include <ql/indexes/iborindex.hpp>
 #include <ql/option.hpp>
-#include <ql/optional.hpp>
+#include <optional>
 #include <ql/quotes/simplequote.hpp>
 #include <ql/termstructures/volatility/optionlet/optionletvolatilitystructure.hpp>
 #include <ql/termstructures/volatility/swaption/swaptionvolstructure.hpp>

@@ -26,6 +26,7 @@
 #include <ql/indexes/iborindex.hpp>
 #include <ql/instruments/fixedvsfloatingswap.hpp>
 #include <ql/termstructures/yieldtermstructure.hpp>
+#include <optional>
 #include <utility>
 
 namespace QuantLib {

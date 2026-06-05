@@ -41,7 +41,7 @@
 #include <ql/currencies/europe.hpp>
 #include <ql/time/daycounters/actual360.hpp>
 #include <ql/time/daycounters/thirty360.hpp>
-#include <ql/optional.hpp>
+#include <optional>
 #include <map>
 #include <iomanip>
 #include <iostream>

@@ -34,6 +34,7 @@
 #include <ql/time/calendar.hpp>
 #include <ql/time/daycounter.hpp>
 #include <ql/termstructures/volatility/smilesection.hpp>
+#include <optional>
 
 namespace QuantLib {
 

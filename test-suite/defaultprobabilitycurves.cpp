@@ -36,6 +36,7 @@
 #include <ql/time/daycounters/actual360.hpp>
 #include <ql/time/daycounters/thirty360.hpp>
 #include <ql/utilities/dataformatters.hpp>
+#include <optional>
 #include <iomanip>
 #include <map>
 #include <string>

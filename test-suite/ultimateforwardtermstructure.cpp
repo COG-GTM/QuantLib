@@ -27,6 +27,7 @@
 #include <ql/termstructures/yieldtermstructure.hpp>
 #include <ql/time/calendars/nullcalendar.hpp>
 #include <ql/time/daycounters/simpledaycounter.hpp>
+#include <optional>
 
 using namespace QuantLib;
 using namespace boost::unit_test_framework;

@@ -28,7 +28,7 @@
 #include <ql/instruments/swap.hpp>
 #include <ql/termstructures/yieldtermstructure.hpp>
 #include <ql/handle.hpp>
-#include <ql/optional.hpp>
+#include <optional>
 
 namespace QuantLib {
 

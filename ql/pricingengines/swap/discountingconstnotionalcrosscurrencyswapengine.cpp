@@ -21,6 +21,7 @@
 #include <ql/cashflows/cashflows.hpp>
 #include <ql/exchangerate.hpp>
 #include <ql/utilities/dataformatters.hpp>
+#include <optional>
 #include <utility>
 
 namespace QuantLib {

@@ -18,7 +18,7 @@
 */
 
 #include <ql/pricingengines/capfloor/analyticcapfloorengine.hpp>
-#include <ql/optional.hpp>
+#include <optional>
 #include <utility>
 
 namespace QuantLib {

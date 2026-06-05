@@ -30,7 +30,7 @@
 
 #include <ql/instrument.hpp>
 #include <ql/default.hpp>
-#include <ql/optional.hpp>
+#include <optional>
 #include <ql/time/schedule.hpp>
 
 #include <ql/experimental/credit/basket.hpp>

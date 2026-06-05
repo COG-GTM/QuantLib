@@ -25,6 +25,7 @@
 #include <ql/pricingengines/swap/discountingswapengine.hpp>
 #include <ql/termstructures/yield/oisratehelper.hpp>
 #include <ql/utilities/null_deleter.hpp>
+#include <optional>
 #include <utility>
 
 namespace QuantLib {

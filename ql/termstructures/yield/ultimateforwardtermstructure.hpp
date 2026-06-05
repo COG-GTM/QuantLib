@@ -25,7 +25,7 @@
 #define quantlib_ultimate_forward_term_structure_hpp
 
 #include <ql/math/rounding.hpp>
-#include <ql/optional.hpp>
+#include <optional>
 #include <ql/quote.hpp>
 #include <ql/termstructures/yield/zeroyieldstructure.hpp>
 #include <utility>

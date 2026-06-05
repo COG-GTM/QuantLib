@@ -29,6 +29,7 @@
 #include <ql/quotes/simplequote.hpp>
 #include <ql/termstructures/yield/flatforward.hpp>
 #include <ql/termstructures/yield/zerospreadedtermstructure.hpp>
+#include <optional>
 #include <utility>
 
 namespace QuantLib {

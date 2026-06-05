@@ -26,6 +26,7 @@
 #include <ql/termstructures/volatility/equityfx/blackvolsurfacedelta.hpp>
 #include <ql/termstructures/volatility/interpolatedsmilesection.hpp>
 #include <ql/termstructures/volatility/flatsmilesection.hpp>
+#include <optional>
 
 using namespace std;
 

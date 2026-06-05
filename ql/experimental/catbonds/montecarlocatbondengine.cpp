@@ -19,7 +19,7 @@
 
 #include <ql/cashflows/cashflows.hpp>
 #include <ql/experimental/catbonds/montecarlocatbondengine.hpp>
-#include <ql/optional.hpp>
+#include <optional>
 #include <algorithm>
 #include <utility>
 

@@ -21,6 +21,7 @@
 
 #include <ql/indexes/iborindex.hpp>
 #include <ql/termstructures/volatility/optionlet/optionletstripper.hpp>
+#include <optional>
 #include <utility>
 
 using std::vector;

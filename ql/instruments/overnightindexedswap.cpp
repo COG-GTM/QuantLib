@@ -23,6 +23,7 @@
 #include <ql/cashflows/fixedratecoupon.hpp>
 #include <ql/cashflows/overnightindexedcoupon.hpp>
 #include <ql/instruments/overnightindexedswap.hpp>
+#include <optional>
 #include <utility>
 
 namespace QuantLib {

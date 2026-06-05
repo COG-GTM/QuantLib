@@ -35,7 +35,7 @@
 #include <ql/indexes/ibor/euribor.hpp>
 #include <ql/indexes/ibor/usdlibor.hpp>
 #include <ql/indexes/ibor/sofr.hpp>
-#include <ql/optional.hpp>
+#include <optional>
 #include <ql/settings.hpp>
 
 using namespace QuantLib;

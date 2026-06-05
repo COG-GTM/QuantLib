@@ -27,7 +27,7 @@
 
 #include <ql/time/date.hpp>
 #include <ql/patterns/observable.hpp>
-#include <ql/optional.hpp>
+#include <optional>
 
 namespace QuantLib {
 

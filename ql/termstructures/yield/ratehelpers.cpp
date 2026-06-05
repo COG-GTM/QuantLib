@@ -28,7 +28,7 @@
 #include <ql/indexes/swapindex.hpp>
 #include <ql/instruments/makevanillaswap.hpp>
 #include <ql/instruments/simplifynotificationgraph.hpp>
-#include <ql/optional.hpp>
+#include <optional>
 #include <ql/pricingengines/swap/discountingswapengine.hpp>
 #include <ql/quote.hpp>
 #include <ql/termstructures/yield/ratehelpers.hpp>

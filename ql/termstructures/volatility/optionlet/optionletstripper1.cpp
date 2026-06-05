@@ -31,6 +31,7 @@
 #include <ql/indexes/iborindex.hpp>
 #include <ql/quotes/simplequote.hpp>
 #include <ql/utilities/dataformatters.hpp>
+#include <optional>
 
 namespace QuantLib {
 

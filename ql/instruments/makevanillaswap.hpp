@@ -29,6 +29,7 @@
 #include <ql/instruments/vanillaswap.hpp>
 #include <ql/time/dategenerationrule.hpp>
 #include <ql/termstructures/yieldtermstructure.hpp>
+#include <optional>
 
 namespace QuantLib {
 

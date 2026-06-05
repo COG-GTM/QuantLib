@@ -31,6 +31,7 @@
 #include <ql/pricingengines/bond/bondfunctions.hpp>
 #include <ql/pricingengines/bond/discountingbondengine.hpp>
 #include <ql/shared_ptr.hpp>
+#include <optional>
 #include <utility>
 
 namespace QuantLib {

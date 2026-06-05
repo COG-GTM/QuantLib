@@ -26,6 +26,7 @@
 #include <ql/experimental/termstructures/crosscurrencyratehelpers.hpp>
 #include <ql/pricingengines/swap/discountingconstnotionalcrosscurrencyswapengine.hpp>
 #include <ql/utilities/null_deleter.hpp>
+#include <optional>
 #include <utility>
 
 namespace QuantLib {

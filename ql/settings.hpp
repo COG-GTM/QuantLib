@@ -29,7 +29,7 @@
 #include <ql/patterns/singleton.hpp>
 #include <ql/time/date.hpp>
 #include <ql/utilities/observablevalue.hpp>
-#include <ql/optional.hpp>
+#include <optional>
 
 namespace QuantLib {
 

@@ -27,7 +27,7 @@
 
 #include <ql/time/businessdayconvention.hpp>
 #include <ql/instruments/swaption.hpp>
-#include <ql/optional.hpp>
+#include <optional>
 
 namespace QuantLib {
 

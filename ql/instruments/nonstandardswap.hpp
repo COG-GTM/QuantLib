@@ -28,7 +28,7 @@
 #include <ql/instruments/fixedvsfloatingswap.hpp>
 #include <ql/time/daycounter.hpp>
 #include <ql/time/schedule.hpp>
-#include <ql/optional.hpp>
+#include <optional>
 
 namespace QuantLib {
 

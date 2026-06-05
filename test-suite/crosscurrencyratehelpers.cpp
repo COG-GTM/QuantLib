@@ -23,7 +23,7 @@
 #include <ql/indexes/ibor/sofr.hpp>
 #include <ql/pricingengines/vanilla/all.hpp>
 #include <ql/experimental/termstructures/crosscurrencyratehelpers.hpp>
-#include <ql/optional.hpp>
+#include <optional>
 #include <ql/indexes/ibor/euribor.hpp>
 #include <ql/indexes/ibor/usdlibor.hpp>
 #include <ql/cashflows/iborcoupon.hpp>

@@ -36,7 +36,7 @@
 #include <ql/instruments/futures.hpp>
 #include <ql/time/calendar.hpp>
 #include <ql/time/daycounter.hpp>
-#include <ql/optional.hpp>
+#include <optional>
 
 namespace QuantLib {
 

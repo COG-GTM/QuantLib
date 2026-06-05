@@ -57,6 +57,7 @@
 #include <ql/indexes/ibor/swestr.hpp>
 #include <ql/indexes/ibor/kofr.hpp>
 #include <ql/indexes/ibor/mosprime.hpp>
+#include <optional>
 
 #include <iostream>
 #include <iomanip>

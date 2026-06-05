@@ -30,7 +30,7 @@
 #include <ql/exercise.hpp>
 #include <ql/pricingengines/mcsimulation.hpp>
 #include <ql/methods/montecarlo/longstaffschwartzpathpricer.hpp>
-#include <ql/optional.hpp>
+#include <optional>
 
 namespace QuantLib {
 

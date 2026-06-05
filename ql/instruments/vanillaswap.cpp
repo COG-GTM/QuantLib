@@ -23,6 +23,7 @@
 #include <ql/indexes/iborindex.hpp>
 #include <ql/instruments/vanillaswap.hpp>
 #include <ql/termstructures/yieldtermstructure.hpp>
+#include <optional>
 #include <utility>
 
 namespace QuantLib {

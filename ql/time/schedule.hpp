@@ -31,7 +31,7 @@
 #include <ql/time/period.hpp>
 #include <ql/time/dategenerationrule.hpp>
 #include <ql/errors.hpp>
-#include <ql/optional.hpp>
+#include <optional>
 
 namespace QuantLib {
 
