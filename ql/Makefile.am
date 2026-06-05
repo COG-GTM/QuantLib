@@ -43,6 +43,7 @@ this_include_HEADERS = \
 	money.hpp \
 	numericalmethod.hpp \
 	option.hpp \
+	optional.hpp \
 	payoff.hpp \
 	position.hpp \
 	prices.hpp \

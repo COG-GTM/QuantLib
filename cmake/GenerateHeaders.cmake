@@ -14,6 +14,7 @@ function(generate_ql_header source_dir binary_dir)
     list(FILTER children_hpp EXCLUDE REGEX "config.*.hpp")
     list(FILTER children_hpp EXCLUDE REGEX "mathconstants.hpp")
     list(FILTER children_hpp EXCLUDE REGEX "qldefines.hpp")
+    list(FILTER children_hpp EXCLUDE REGEX "optional.hpp")
     list(FILTER children_hpp EXCLUDE REGEX "quantlib.hpp")
     list(FILTER children_hpp EXCLUDE REGEX "version.hpp")
 
