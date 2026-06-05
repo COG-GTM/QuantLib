@@ -1,0 +1,97 @@
+
+/*
+ Copyright (C) 2024 QuantLib contributors
+
+ This file is part of QuantLib, a free-software/open-source library
+ for financial quantitative analysts and developers - http://quantlib.org/
+
+ QuantLib is free software: you can redistribute it and/or modify it
+ under the terms of the QuantLib license.  You should have received a
+ copy of the license along with this program; if not, please email
+ <quantlib-dev@lists.sf.net>. The license is also available online at
+ <https://www.quantlib.org/license.shtml>.
+
+ This program is distributed in the hope that it will be useful, but WITHOUT
+ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ FOR A PARTICULAR PURPOSE.  See the license for more details.
+*/
+
+/*! \page modernization Modernization roadmap: removing the Boost compatibility shims
+
+    For historical reasons %QuantLib reaches Boost through a small set of
+    <b>compatibility shims</b> under \c ql/ (\c optional.hpp, \c shared_ptr.hpp,
+    \c any.hpp, \c functional.hpp, \c tuple.hpp). Each aliases a Boost or a
+    standard facility into \c namespace \c QuantLib::ext behind a
+    \c QL_USE_STD_* flag. These shims are deprecated; the goal is to move to
+    standard C++17 facilities.
+
+    This page records the recommended order of work and, in particular, the
+    flagship first migration.
+
+    \section modernization_priority What to do first, and why
+
+    When deciding which shim to remove first, rank by <b>correctness risk</b> --
+    the chance that a dependency upgrade silently changes a <em>pricing
+    result</em> without failing the build -- not merely by how many files are
+    touched. In a pricing library a silent change of a number is the most
+    dangerous failure mode.
+
+    On that measure, the \c optional shim is the clear first target:
+
+    - \c ql/optional.hpp contains an explicit guard that <tt>\#error</tt>s on
+      Boost &ge; 1.91, because Boost 1.91 introduced changes in
+      \c boost::optional that <em>silently changed the behavior</em> of the code
+      and would cause it to work incorrectly. It is the only shim with a proven
+      silent-correctness precedent.
+    - \c optional appears on public, price-affecting APIs: the
+      \c includeTodaysCashFlows_ setting (NPV inclusion of today's flows) and
+      \c Event::hasOccurred (whether a cash flow has already occurred, which
+      drives accrual). A wrong empty-state semantics here changes valuations.
+    - Its blast radius is tractable (about 79 files), which makes it the ideal
+      first step to prove the methodology before tackling the much larger
+      \c shared_ptr shim (around 1,270 files).
+
+    Recommended order: <b>optional</b> first, then \c any, then \c functional /
+    \c tuple, and finally the large \c shared_ptr migration.
+
+    \section modernization_optional The optional migration in detail
+
+    Replace \c ext::optional with \c std::optional and \c ext::nullopt with
+    \c std::nullopt, and replace <tt>\#include &lt;ql/optional.hpp&gt;</tt> with
+    <tt>\#include &lt;optional&gt;</tt> (every translation unit that names
+    \c std::optional must include \c &lt;optional&gt; directly).
+
+    \c optional flows from low-level headers upward, so migrate bottom-up to keep
+    the build green at every step:
+
+    \code
+    settings.hpp / event.hpp  ->  cashflow.hpp  ->  cashflows/*  ->  instruments/*
+                                                  ->  pricingengines/*
+    termstructures/*          ->  pricingengines/*
+    experimental/*, time/*
+    test-suite/*   (migrate last -- it consumes the whole library)
+    \endcode
+
+    Headers migrate before their corresponding \c .cpp files. Once the usages are
+    migrated, remove the now-dead \c QL_USE_STD_OPTIONAL option from
+    \c CMakeLists.txt, \c CMakePresets.json, \c configure.ac,
+    \c ql/userconfig.hpp, \c ql/config.hpp.cfg, the \c .ci/userconfig*.alt.hpp
+    files and \c Docs/pages/config.docs, and reduce \c ql/optional.hpp to a thin
+    deprecated <tt>\#include &lt;optional&gt;</tt> for backward compatibility.
+
+    \section modernization_proof Proving pricing behavior is unchanged
+
+    A green build is not sufficient proof for a price-affecting change. Verify
+    locally (this matches the regression suite CI would run):
+
+    - run the full regression suite with \c ctest (expect 100% pass);
+    - run a <b>numeric equivalence harness</b>: build the same examples from
+      \c master and from the migration branch, run each, and \c diff their output
+      (NPVs, Greeks, rates) -- expect zero differences across instruments such as
+      EquityOption, Bonds, BermudanSwaption, FRA, MulticurveBootstrapping and CDS;
+    - confirm with \c grep that no \c ext::optional, \c ext::nullopt or
+      \c boost::optional usages remain.
+
+    Together these constitute the change-control evidence such a modernization
+    requires: the blast radius is mapped and the behavior is proven unchanged.
+*/
