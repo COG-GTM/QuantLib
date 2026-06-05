@@ -20,6 +20,7 @@
 
 #include "toplevelfixture.hpp"
 #include "utilities.hpp"
+#include <optional>
 
 #include <ql/termstructures/yield/oisratehelper.hpp>
 #include <ql/instruments/makeois.hpp>
@@ -456,8 +457,8 @@ BOOST_AUTO_TEST_CASE(testBootstrapWithCustomPricer) {
                                                       Pillar::LastRelevantDate,
                                                       Date(),
                                                       averagingMethod,
-                                                      ext::nullopt,
-                                                      ext::nullopt,
+                                                      std::nullopt,
+                                                      std::nullopt,
                                                       Calendar(),
                                                       Null<Natural>(),
                                                       0,
@@ -527,8 +528,8 @@ void testBootstrapWithLookback(Natural lookbackDays,
                                                       Pillar::LastRelevantDate,
                                                       Date(),
                                                       RateAveraging::Compound,
-                                                      ext::nullopt,
-                                                      ext::nullopt,
+                                                      std::nullopt,
+                                                      std::nullopt,
                                                       Calendar(),
                                                       lookbackDays,
                                                       lockoutDays,
@@ -763,7 +764,7 @@ for (auto & i : data) {
                                   false, 0,
                                   Following, Annual, calendar, 0*Days, 0.0,
                                   Pillar::LastRelevantDate, Date(),
-                                  RateAveraging::Compound, ext::nullopt, ext::nullopt,
+                                  RateAveraging::Compound, std::nullopt, std::nullopt,
                                   calendar, Null<Natural>(), 0, false,
                                   ext::shared_ptr<FloatingRateCouponPricer>(),
                                   DateGeneration::Backward, calendar));
