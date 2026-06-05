@@ -174,7 +174,7 @@ BOOST_AUTO_TEST_CASE(testDiffusion) {
 
     Real vol = std::sqrt(0.04);
     BOOST_CHECK_CLOSE(diff[0][0], vol, 1e-10);
-    BOOST_CHECK_CLOSE(diff[0][1], 0.0, 1e-10);
+    BOOST_CHECK_EQUAL(diff[0][1], 0.0);
     BOOST_CHECK_CLOSE(diff[1][0], vars.sigma * vol * vars.rho, 1e-10);
     Real sqrtRhoTerm = vars.sigma * vol * std::sqrt(1.0 - vars.rho * vars.rho);
     BOOST_CHECK_CLOSE(diff[1][1], sqrtRhoTerm, 1e-10);

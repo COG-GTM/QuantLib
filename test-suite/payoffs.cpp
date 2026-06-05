@@ -45,15 +45,15 @@ BOOST_AUTO_TEST_CASE(testPlainVanillaPayoff) {
 
     PlainVanillaPayoff call(Option::Call, strike);
     BOOST_CHECK_CLOSE(call(120.0), 20.0, 1e-10);
-    BOOST_CHECK_CLOSE(call(100.0), 0.0, 1e-10);
-    BOOST_CHECK_CLOSE(call(80.0), 0.0, 1e-10);
+    BOOST_CHECK_EQUAL(call(100.0), 0.0);
+    BOOST_CHECK_EQUAL(call(80.0), 0.0);
     BOOST_CHECK_EQUAL(call.optionType(), Option::Call);
     BOOST_CHECK_CLOSE(call.strike(), strike, 1e-10);
 
     PlainVanillaPayoff put(Option::Put, strike);
     BOOST_CHECK_CLOSE(put(80.0), 20.0, 1e-10);
-    BOOST_CHECK_CLOSE(put(100.0), 0.0, 1e-10);
-    BOOST_CHECK_CLOSE(put(120.0), 0.0, 1e-10);
+    BOOST_CHECK_EQUAL(put(100.0), 0.0);
+    BOOST_CHECK_EQUAL(put(120.0), 0.0);
 
     // description
     std::string desc = call.description();
@@ -73,13 +73,13 @@ BOOST_AUTO_TEST_CASE(testCashOrNothingPayoff) {
 
     CashOrNothingPayoff call(Option::Call, strike, cash);
     BOOST_CHECK_CLOSE(call(120.0), cash, 1e-10);
-    BOOST_CHECK_CLOSE(call(80.0), 0.0, 1e-10);
-    BOOST_CHECK_CLOSE(call(100.0), 0.0, 1e-10); // at the money
+    BOOST_CHECK_EQUAL(call(80.0), 0.0);
+    BOOST_CHECK_EQUAL(call(100.0), 0.0); // at the money
     BOOST_CHECK_CLOSE(call.cashPayoff(), cash, 1e-10);
 
     CashOrNothingPayoff put(Option::Put, strike, cash);
     BOOST_CHECK_CLOSE(put(80.0), cash, 1e-10);
-    BOOST_CHECK_CLOSE(put(120.0), 0.0, 1e-10);
+    BOOST_CHECK_EQUAL(put(120.0), 0.0);
 
     std::string desc = call.description();
     BOOST_CHECK(desc.find("cash payoff") != std::string::npos);
@@ -92,12 +92,12 @@ BOOST_AUTO_TEST_CASE(testAssetOrNothingPayoff) {
 
     AssetOrNothingPayoff call(Option::Call, strike);
     BOOST_CHECK_CLOSE(call(120.0), 120.0, 1e-10);
-    BOOST_CHECK_CLOSE(call(80.0), 0.0, 1e-10);
-    BOOST_CHECK_CLOSE(call(100.0), 0.0, 1e-10);
+    BOOST_CHECK_EQUAL(call(80.0), 0.0);
+    BOOST_CHECK_EQUAL(call(100.0), 0.0);
 
     AssetOrNothingPayoff put(Option::Put, strike);
     BOOST_CHECK_CLOSE(put(80.0), 80.0, 1e-10);
-    BOOST_CHECK_CLOSE(put(120.0), 0.0, 1e-10);
+    BOOST_CHECK_EQUAL(put(120.0), 0.0);
 }
 
 BOOST_AUTO_TEST_CASE(testGapPayoff) {
@@ -109,13 +109,13 @@ BOOST_AUTO_TEST_CASE(testGapPayoff) {
     GapPayoff call(Option::Call, strike, secondStrike);
     BOOST_CHECK_CLOSE(call(120.0), 120.0 - 95.0, 1e-10);
     BOOST_CHECK_CLOSE(call(100.0), 100.0 - 95.0, 1e-10); // >= trigger
-    BOOST_CHECK_CLOSE(call(80.0), 0.0, 1e-10);
+    BOOST_CHECK_EQUAL(call(80.0), 0.0);
     BOOST_CHECK_CLOSE(call.secondStrike(), secondStrike, 1e-10);
 
     GapPayoff put(Option::Put, strike, secondStrike);
     BOOST_CHECK_CLOSE(put(80.0), 95.0 - 80.0, 1e-10);
     BOOST_CHECK_CLOSE(put(100.0), 95.0 - 100.0, 1e-10); // = trigger
-    BOOST_CHECK_CLOSE(put(120.0), 0.0, 1e-10);
+    BOOST_CHECK_EQUAL(put(120.0), 0.0);
 
     std::string desc = call.description();
     BOOST_CHECK(desc.find("strike payoff") != std::string::npos);
@@ -130,8 +130,8 @@ BOOST_AUTO_TEST_CASE(testSuperFundPayoff) {
     SuperFundPayoff payoff(strike, secondStrike);
     BOOST_CHECK_CLOSE(payoff(120.0), 120.0 / 100.0, 1e-10);
     BOOST_CHECK_CLOSE(payoff(100.0), 100.0 / 100.0, 1e-10);
-    BOOST_CHECK_CLOSE(payoff(80.0), 0.0, 1e-10);
-    BOOST_CHECK_CLOSE(payoff(150.0), 0.0, 1e-10);
+    BOOST_CHECK_EQUAL(payoff(80.0), 0.0);
+    BOOST_CHECK_EQUAL(payoff(150.0), 0.0);
     BOOST_CHECK_CLOSE(payoff(149.99), 149.99 / 100.0, 1e-10);
 }
 
@@ -145,8 +145,8 @@ BOOST_AUTO_TEST_CASE(testSuperSharePayoff) {
     SuperSharePayoff payoff(strike, secondStrike, cashPayoff);
     BOOST_CHECK_CLOSE(payoff(120.0), cashPayoff, 1e-10);
     BOOST_CHECK_CLOSE(payoff(100.0), cashPayoff, 1e-10);
-    BOOST_CHECK_CLOSE(payoff(80.0), 0.0, 1e-10);
-    BOOST_CHECK_CLOSE(payoff(150.0), 0.0, 1e-10);
+    BOOST_CHECK_EQUAL(payoff(80.0), 0.0);
+    BOOST_CHECK_EQUAL(payoff(150.0), 0.0);
     BOOST_CHECK_CLOSE(payoff.cashPayoff(), cashPayoff, 1e-10);
     BOOST_CHECK_CLOSE(payoff.secondStrike(), secondStrike, 1e-10);
 
@@ -161,7 +161,7 @@ BOOST_AUTO_TEST_CASE(testPercentageStrikePayoff) {
     Real moneyness = 1.1;
 
     PercentageStrikePayoff call(Option::Call, moneyness);
-    BOOST_CHECK_CLOSE(call(100.0), 0.0, 1e-10);
+    BOOST_CHECK_EQUAL(call(100.0), 0.0);
 
     PercentageStrikePayoff put(Option::Put, moneyness);
     BOOST_CHECK_CLOSE(put(100.0), 100.0 * (1.1 - 1.0), 1e-10);
@@ -175,12 +175,12 @@ BOOST_AUTO_TEST_CASE(testFloatingTypePayoff) {
 
     FloatingTypePayoff call(Option::Call);
     BOOST_CHECK_CLOSE(call(120.0, 100.0), 20.0, 1e-10);
-    BOOST_CHECK_CLOSE(call(80.0, 100.0), 0.0, 1e-10);
+    BOOST_CHECK_EQUAL(call(80.0, 100.0), 0.0);
     BOOST_CHECK_THROW(call(100.0), Error);
 
     FloatingTypePayoff put(Option::Put);
     BOOST_CHECK_CLOSE(put(80.0, 100.0), 20.0, 1e-10);
-    BOOST_CHECK_CLOSE(put(120.0, 100.0), 0.0, 1e-10);
+    BOOST_CHECK_EQUAL(put(120.0, 100.0), 0.0);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
