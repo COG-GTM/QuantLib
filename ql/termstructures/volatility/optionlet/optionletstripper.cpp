@@ -21,6 +21,7 @@
 
 #include <ql/indexes/iborindex.hpp>
 #include <ql/termstructures/volatility/optionlet/optionletstripper.hpp>
+#include <optional>
 #include <utility>
 
 using std::vector;
@@ -33,7 +34,7 @@ namespace QuantLib {
         Handle<YieldTermStructure> discount,
         const VolatilityType type,
         const Real displacement,
-        ext::optional<Period> optionletFrequency
+        std::optional<Period> optionletFrequency
     )
     : termVolSurface_(termVolSurface), iborIndex_(std::move(iborIndex)),
       discount_(std::move(discount)), nStrikes_(termVolSurface->strikes().size()),
@@ -170,7 +171,7 @@ namespace QuantLib {
         return volatilityType_;
     }
 
-    ext::optional<Period> OptionletStripper::optionletFrequency() const {
+    std::optional<Period> OptionletStripper::optionletFrequency() const {
         return optionletFrequency_;
     }
 
