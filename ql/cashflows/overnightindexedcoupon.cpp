@@ -523,7 +523,7 @@ namespace QuantLib {
         return *this;
     }
 
-    OvernightLeg& OvernightLeg::withLastRecentPeriod(const ext::optional<Period>& lastRecentPeriod) {
+    OvernightLeg& OvernightLeg::withLastRecentPeriod(const std::optional<Period>& lastRecentPeriod) {
         lastRecentPeriod_ = lastRecentPeriod;
         return *this;
     }
