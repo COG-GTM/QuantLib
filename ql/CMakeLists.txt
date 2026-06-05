@@ -1875,7 +1875,6 @@ set(QL_HEADERS
     money.hpp
     numericalmethod.hpp
     option.hpp
-    optional.hpp
     patterns/curiouslyrecurring.hpp
     patterns/lazyobject.hpp
     patterns/observable.hpp

@@ -1925,7 +1925,6 @@
     <ClInclude Include="ql\money.hpp" />
     <ClInclude Include="ql\numericalmethod.hpp" />
     <ClInclude Include="ql\option.hpp" />
-    <ClInclude Include="ql\optional.hpp" />
     <ClInclude Include="ql\payoff.hpp" />
     <ClInclude Include="ql\position.hpp" />
     <ClInclude Include="ql\prices.hpp" />
