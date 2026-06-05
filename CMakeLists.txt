@@ -42,6 +42,7 @@ set(QL_INSTALL_CMAKEDIR "lib/cmake/${PACKAGE_NAME}" CACHE STRING
 option(QL_BUILD_EXAMPLES "Build examples" ON)
 option(QL_BUILD_TEST_SUITE "Build test suite" ON)
 option(QL_BUILD_FUZZ_TEST_SUITE "Build fuzz test suite" OFF) 
+option(QL_ENABLE_COVERAGE "Enable code coverage reporting (gcov/lcov)" OFF)
 option(QL_ENABLE_OPENMP "Detect and use OpenMP" OFF)
 option(QL_ENABLE_PARALLEL_UNIT_TEST_RUNNER "Enable the parallel unit test runner" OFF)
 option(QL_ENABLE_SESSIONS "Singletons return different instances for different sessions" OFF)
@@ -82,6 +83,42 @@ endif()
 # Avoid use of compiler language extensions, i.e. -std=c++17 not -std=gnu++17
 if (NOT DEFINED CMAKE_CXX_EXTENSIONS)
     set(CMAKE_CXX_EXTENSIONS FALSE)
+endif()
+
+# Code coverage flags
+if (QL_ENABLE_COVERAGE)
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        add_compile_options(-fprofile-arcs -ftest-coverage)
+        add_link_options(-fprofile-arcs -ftest-coverage)
+    else()
+        message(FATAL_ERROR "Code coverage is only supported with GCC or Clang")
+    endif()
+
+    find_program(LCOV_PATH lcov REQUIRED)
+    find_program(GENHTML_PATH genhtml REQUIRED)
+
+    add_custom_target(coverage
+        COMMENT "Running test suite and generating coverage report..."
+        # Reset counters
+        COMMAND ${LCOV_PATH} --directory ${CMAKE_BINARY_DIR} --zerocounters
+        # Run the test suite
+        COMMAND ${CMAKE_CTEST_COMMAND} --test-dir ${CMAKE_BINARY_DIR} --output-on-failure
+        # Capture coverage data
+        COMMAND ${LCOV_PATH} --directory ${CMAKE_BINARY_DIR} --capture
+            --output-file ${CMAKE_BINARY_DIR}/coverage.info
+        # Filter to only ql/ source files
+        COMMAND ${LCOV_PATH}
+            --extract ${CMAKE_BINARY_DIR}/coverage.info
+                "${CMAKE_SOURCE_DIR}/ql/*"
+            --output-file ${CMAKE_BINARY_DIR}/coverage_filtered.info
+        # Generate HTML report
+        COMMAND ${GENHTML_PATH} ${CMAKE_BINARY_DIR}/coverage_filtered.info
+            --output-directory ${CMAKE_BINARY_DIR}/coverage_report
+            --title "QuantLib Coverage Report"
+            --legend --show-details
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    )
+    message(STATUS "Coverage enabled: build, then run 'make coverage' to generate report")
 endif()
 
 # Convenience option to activate all STD options

@@ -19,6 +19,7 @@ set(QL_TEST_SOURCES
     blackformula.cpp
     blackvolsurfacedelta.cpp
     bondforward.cpp
+    bondfunctions.cpp
     bonds.cpp
     brownianbridge.cpp
     businessdayconventions.cpp
@@ -27,6 +28,7 @@ set(QL_TEST_SOURCES
     capfloor.cpp
     capflooredcoupon.cpp
     cashflows.cpp
+    cashflowsmore.cpp
     catbonds.cpp
     cdo.cpp
     cdsoption.cpp
@@ -82,6 +84,7 @@ set(QL_TEST_SOURCES
     gjrgarchmodel.cpp
     gsr.cpp
     hestonmodel.cpp
+    hestonprocess.cpp
     hestonslvmodel.cpp
     himalayaoption.cpp
     hybridhestonhullwhiteprocess.cpp
@@ -134,6 +137,7 @@ set(QL_TEST_SOURCES
     pagodaoption.cpp
     partialtimebarrieroption.cpp
     pathgenerator.cpp
+    payoffs.cpp
     period.cpp
     perpetualfutures.cpp
     piecewiseblackvariancesurface.cpp
