@@ -20,6 +20,7 @@
 #include <ql/cashflows/multipleresetscoupon.hpp>
 #include <ql/instruments/multipleresetsswap.hpp>
 #include <utility>
+#include <optional>
 
 namespace QuantLib {
 
@@ -41,7 +42,7 @@ namespace QuantLib {
         Schedule fullResetSchedule,
         const ext::shared_ptr<IborIndex>& iborIndex, Size resetsPerCoupon,
         Spread spread, RateAveraging::Type averagingMethod,
-        ext::optional<BusinessDayConvention> paymentConvention,
+        std::optional<BusinessDayConvention> paymentConvention,
         Integer paymentLag, const Calendar& paymentCalendar)
     : FixedVsFloatingSwap(type,
           std::vector<Real>(fixedSchedule.size() - 1, nominal),
