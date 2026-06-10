@@ -83,13 +83,13 @@
       "hidden": true,
       "binaryDir": "${sourceDir}/build/${presetName}",
       "architecture": {
-          "value": "arm64",
-          "strategy": "external"
+        "value": "arm64",
+        "strategy": "external"
       },
       "condition": {
-          "type": "equals",
-          "lhs": "${hostSystemName}",
-          "rhs": "Darwin"
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
       }
     },
     {
@@ -303,7 +303,6 @@
         "QL_USE_INDEXED_COUPON": "ON",
         "QL_USE_STD_SHARED_PTR": "ON",
         "QL_USE_STD_ANY": "OFF",
-        "QL_USE_STD_OPTIONAL": "OFF",
         "QL_COMPILE_WARNING_AS_ERROR": "ON"
       }
     },
@@ -323,7 +322,6 @@
         "QL_USE_INDEXED_COUPON": "ON",
         "QL_USE_STD_SHARED_PTR": "ON",
         "QL_USE_STD_ANY": "OFF",
-        "QL_USE_STD_OPTIONAL": "OFF",
         "QL_COMPILE_WARNING_AS_ERROR": "ON",
         "CMAKE_CXX_COMPILER_LAUNCHER": "sccache"
       }
@@ -332,27 +330,27 @@
       "name": "apple-arm64-ninja-debug",
       "description": "Apple M series preset Debug",
       "inherits": [
-          "apple-arm64-base",
-          "ninja",
-          "_debug"
+        "apple-arm64-base",
+        "ninja",
+        "_debug"
       ]
     },
     {
       "name": "apple-arm64-ninja-release",
       "description": "Apple M series preset Release",
       "inherits": [
-          "apple-arm64-base",
-          "ninja",
-          "_release"
+        "apple-arm64-base",
+        "ninja",
+        "_release"
       ]
     },
     {
       "name": "apple-arm64-ninja-relwithdebinfo",
       "description": "Apple M series preset RelWithDebInfo",
       "inherits": [
-          "apple-arm64-base",
-          "ninja",
-          "_relwithdebinfo"
+        "apple-arm64-base",
+        "ninja",
+        "_relwithdebinfo"
       ]
     }
   ]
