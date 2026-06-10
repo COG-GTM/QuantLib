@@ -49,6 +49,7 @@ set(QL_TEST_SOURCES
     curvestates.cpp
     dates.cpp
     daycounters.cpp
+    daycounters_extra.cpp
     defaultprobabilitycurves.cpp
     digitalcoupon.cpp
     digitaloption.cpp
@@ -113,6 +114,7 @@ set(QL_TEST_SOURCES
     marketmodel_smmcapletcalibration.cpp
     marketmodel_smmcaplethomocalibration.cpp
     markovfunctional.cpp
+    mathutilities.cpp
     matrices.cpp
     mclongstaffschwartzengine.cpp
     mersennetwister.cpp
@@ -137,6 +139,7 @@ set(QL_TEST_SOURCES
     period.cpp
     perpetualfutures.cpp
     piecewiseblackvariancesurface.cpp
+    pricingengine_edgecases.cpp
     piecewiseyieldcurve.cpp
     piecewisezerospreadedtermstructure.cpp
     preconditions.cpp
