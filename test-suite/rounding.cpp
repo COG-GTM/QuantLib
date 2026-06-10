@@ -149,6 +149,82 @@ BOOST_AUTO_TEST_CASE(testCeiling) {
     }
 }
 
+BOOST_AUTO_TEST_CASE(testNoneRounding) {
+    BOOST_TEST_MESSAGE("Testing no-op rounding (Rounding::None)...");
+
+    Rounding none;
+    Real values[] = {1.23456789, -3.14159265, 0.0, 100.0, -0.001};
+
+    for (Real v : values) {
+        Real calculated = none(v);
+        if (!close(calculated, v))
+            BOOST_ERROR("None rounding changed value " << v
+                        << " to " << calculated);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(testZeroPrecision) {
+    BOOST_TEST_MESSAGE("Testing rounding to zero decimal places...");
+
+    ClosestRounding closest(0);
+    UpRounding up(0);
+    DownRounding down(0);
+
+    Real x = 3.7;
+    if (!close(closest(x), 4.0))
+        BOOST_ERROR("Closest(3.7, 0) = " << closest(x) << ", expected 4.0");
+    if (!close(up(x), 4.0))
+        BOOST_ERROR("Up(3.7, 0) = " << up(x) << ", expected 4.0");
+    if (!close(down(x), 3.0))
+        BOOST_ERROR("Down(3.7, 0) = " << down(x) << ", expected 3.0");
+
+    x = -2.3;
+    if (!close(closest(x), -2.0))
+        BOOST_ERROR("Closest(-2.3, 0) = " << closest(x) << ", expected -2.0");
+    if (!close(up(x), -3.0))
+        BOOST_ERROR("Up(-2.3, 0) = " << up(x) << ", expected -3.0");
+    if (!close(down(x), -2.0))
+        BOOST_ERROR("Down(-2.3, 0) = " << down(x) << ", expected -2.0");
+}
+
+BOOST_AUTO_TEST_CASE(testRoundingExactValues) {
+    BOOST_TEST_MESSAGE("Testing rounding of exact values (no fractional excess)...");
+
+    ClosestRounding closest(2);
+    UpRounding up(2);
+    DownRounding down(2);
+
+    Real x = 1.25;
+    if (!close(closest(x), 1.25))
+        BOOST_ERROR("Closest(1.25, 2) = " << closest(x));
+    if (!close(up(x), 1.25))
+        BOOST_ERROR("Up(1.25, 2) = " << up(x));
+    if (!close(down(x), 1.25))
+        BOOST_ERROR("Down(1.25, 2) = " << down(x));
+}
+
+BOOST_AUTO_TEST_CASE(testRoundingZero) {
+    BOOST_TEST_MESSAGE("Testing rounding of zero...");
+
+    ClosestRounding closest(5);
+    UpRounding up(5);
+    DownRounding down(5);
+    FloorTruncation floor(5);
+    CeilingTruncation ceiling(5);
+
+    Real x = 0.0;
+    if (!close(closest(x), 0.0))
+        BOOST_ERROR("Closest(0.0) = " << closest(x));
+    if (!close(up(x), 0.0))
+        BOOST_ERROR("Up(0.0) = " << up(x));
+    if (!close(down(x), 0.0))
+        BOOST_ERROR("Down(0.0) = " << down(x));
+    if (!close(floor(x), 0.0))
+        BOOST_ERROR("Floor(0.0) = " << floor(x));
+    if (!close(ceiling(x), 0.0))
+        BOOST_ERROR("Ceiling(0.0) = " << ceiling(x));
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE_END()

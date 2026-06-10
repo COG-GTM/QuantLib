@@ -189,6 +189,85 @@ BOOST_AUTO_TEST_CASE(testConversions) {
     }
 }
 
+BOOST_AUTO_TEST_CASE(testCompoundFactorContinuous) {
+    BOOST_TEST_MESSAGE("Testing continuous compound factor...");
+
+    DayCounter dc = Actual360();
+    Rate r = 0.05;
+    InterestRate ir(r, dc, Continuous, Annual);
+
+    // Continuous: CF(t) = exp(r*t)
+    Time t = 2.0;
+    Real calculated = ir.compoundFactor(t);
+    Real expected = std::exp(r * t);
+    Real error = std::fabs(calculated - expected);
+    if (error > 1.0e-15)
+        BOOST_ERROR("Continuous compound factor: " << calculated
+                    << " vs exp(r*t) = " << expected
+                    << ", error = " << error);
+}
+
+BOOST_AUTO_TEST_CASE(testDiscountFactorInverse) {
+    BOOST_TEST_MESSAGE("Testing discount factor is inverse of compound factor...");
+
+    DayCounter dc = Actual360();
+    Rate rates[] = {0.01, 0.05, 0.10, 0.15};
+    Time times[] = {0.25, 0.5, 1.0, 2.0, 5.0, 10.0};
+
+    for (Rate r : rates) {
+        for (Time t : times) {
+            InterestRate ir(r, dc, Compounded, Semiannual);
+            Real cf = ir.compoundFactor(t);
+            DiscountFactor df = ir.discountFactor(t);
+            Real error = std::fabs(df * cf - 1.0);
+            if (error > 1.0e-14)
+                BOOST_ERROR("df * cf = " << df * cf
+                            << " for rate " << r << " at t=" << t
+                            << ", error = " << error);
+        }
+    }
+}
+
+BOOST_AUTO_TEST_CASE(testImpliedRate) {
+    BOOST_TEST_MESSAGE("Testing implied rate from compound factor...");
+
+    DayCounter dc = Actual360();
+    Compounding comp = Compounded;
+    Frequency freq = Semiannual;
+
+    Rate originalRate = 0.06;
+    Time t = 1.5;
+
+    InterestRate ir(originalRate, dc, comp, freq);
+    Real cf = ir.compoundFactor(t);
+
+    InterestRate implied = InterestRate::impliedRate(cf, dc, comp, freq, t);
+    Real error = std::fabs(implied.rate() - originalRate);
+    if (error > 1.0e-12)
+        BOOST_ERROR("Implied rate " << implied.rate()
+                    << " differs from original " << originalRate
+                    << ", error = " << error);
+}
+
+BOOST_AUTO_TEST_CASE(testZeroRateCompoundFactor) {
+    BOOST_TEST_MESSAGE("Testing zero rate compound factor...");
+
+    DayCounter dc = Actual360();
+    Rate r = 0.0;
+
+    InterestRate irCont(r, dc, Continuous, Annual);
+    InterestRate irComp(r, dc, Compounded, Semiannual);
+    InterestRate irSimp(r, dc, Simple, Annual);
+
+    Time t = 1.0;
+    if (!close(irCont.compoundFactor(t), 1.0))
+        BOOST_ERROR("Continuous CF at r=0 = " << irCont.compoundFactor(t));
+    if (!close(irComp.compoundFactor(t), 1.0))
+        BOOST_ERROR("Compounded CF at r=0 = " << irComp.compoundFactor(t));
+    if (!close(irSimp.compoundFactor(t), 1.0))
+        BOOST_ERROR("Simple CF at r=0 = " << irSimp.compoundFactor(t));
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE_END()

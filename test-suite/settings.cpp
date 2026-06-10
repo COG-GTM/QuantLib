@@ -61,6 +61,92 @@ BOOST_AUTO_TEST_CASE(testNotificationsOnDateChange) {
         BOOST_ERROR("missing notification");
 }
 
+BOOST_AUTO_TEST_CASE(testSavedSettings) {
+    BOOST_TEST_MESSAGE("Testing that SavedSettings restores state...");
+
+    Date original = Settings::instance().evaluationDate();
+    bool origRefDateEvents = Settings::instance().includeReferenceDateEvents();
+    bool origEnforceFixings = Settings::instance().enforcesTodaysHistoricFixings();
+
+    {
+        SavedSettings saved;
+        Settings::instance().evaluationDate() = Date(1, January, 2000);
+        Settings::instance().includeReferenceDateEvents() = !origRefDateEvents;
+        Settings::instance().enforcesTodaysHistoricFixings() = !origEnforceFixings;
+    }
+
+    Date restored = Settings::instance().evaluationDate();
+    if (restored != original)
+        BOOST_ERROR("SavedSettings did not restore evaluation date: "
+                    << restored << " vs " << original);
+
+    if (Settings::instance().includeReferenceDateEvents() != origRefDateEvents)
+        BOOST_ERROR("SavedSettings did not restore includeReferenceDateEvents");
+
+    if (Settings::instance().enforcesTodaysHistoricFixings() != origEnforceFixings)
+        BOOST_ERROR("SavedSettings did not restore enforcesTodaysHistoricFixings");
+}
+
+BOOST_AUTO_TEST_CASE(testIncludeReferenceDateEvents) {
+    BOOST_TEST_MESSAGE("Testing includeReferenceDateEvents flag...");
+
+    Settings::instance().includeReferenceDateEvents() = false;
+    if (Settings::instance().includeReferenceDateEvents())
+        BOOST_ERROR("includeReferenceDateEvents should be false");
+
+    Settings::instance().includeReferenceDateEvents() = true;
+    if (!Settings::instance().includeReferenceDateEvents())
+        BOOST_ERROR("includeReferenceDateEvents should be true");
+}
+
+BOOST_AUTO_TEST_CASE(testIncludeTodaysCashFlows) {
+    BOOST_TEST_MESSAGE("Testing includeTodaysCashFlows optional flag...");
+
+    Settings::instance().includeTodaysCashFlows() = ext::nullopt;
+    if (Settings::instance().includeTodaysCashFlows())
+        BOOST_ERROR("includeTodaysCashFlows should be nullopt");
+
+    Settings::instance().includeTodaysCashFlows() = true;
+    if (!Settings::instance().includeTodaysCashFlows() ||
+        !(*Settings::instance().includeTodaysCashFlows()))
+        BOOST_ERROR("includeTodaysCashFlows should be true");
+
+    Settings::instance().includeTodaysCashFlows() = false;
+    if (!Settings::instance().includeTodaysCashFlows() ||
+        *Settings::instance().includeTodaysCashFlows())
+        BOOST_ERROR("includeTodaysCashFlows should be false");
+}
+
+BOOST_AUTO_TEST_CASE(testAnchorAndResetEvaluationDate) {
+    BOOST_TEST_MESSAGE("Testing anchor and reset of evaluation date...");
+
+    Date d(15, March, 2020);
+    Settings::instance().evaluationDate() = d;
+
+    Settings::instance().anchorEvaluationDate();
+    Date anchored = Settings::instance().evaluationDate();
+    if (anchored != d)
+        BOOST_ERROR("Anchored date " << anchored << " != " << d);
+
+    Settings::instance().resetEvaluationDate();
+    Date reset = Settings::instance().evaluationDate();
+    if (reset != Date::todaysDate())
+        BOOST_ERROR("Reset date " << reset << " != today "
+                    << Date::todaysDate());
+}
+
+BOOST_AUTO_TEST_CASE(testEnforcesTodaysHistoricFixings) {
+    BOOST_TEST_MESSAGE("Testing enforcesTodaysHistoricFixings flag...");
+
+    Settings::instance().enforcesTodaysHistoricFixings() = false;
+    if (Settings::instance().enforcesTodaysHistoricFixings())
+        BOOST_ERROR("enforcesTodaysHistoricFixings should be false");
+
+    Settings::instance().enforcesTodaysHistoricFixings() = true;
+    if (!Settings::instance().enforcesTodaysHistoricFixings())
+        BOOST_ERROR("enforcesTodaysHistoricFixings should be true");
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE_END()
