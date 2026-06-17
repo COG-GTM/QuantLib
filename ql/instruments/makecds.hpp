@@ -27,7 +27,7 @@
 
 #include <ql/instruments/creditdefaultswap.hpp>
 #include <ql/time/daycounters/actual360.hpp>
-#include <ql/optional.hpp>
+#include <optional>
 
 namespace QuantLib {
 
@@ -64,9 +64,9 @@ namespace QuantLib {
         MakeCreditDefaultSwap& withPricingEngine(const ext::shared_ptr<PricingEngine>&);
 
       private:
-        ext::optional<Period> tenor_;
-        ext::optional<Date> termDate_;
-        ext::optional<Schedule> schedule_;
+        std::optional<Period> tenor_;
+        std::optional<Date> termDate_;
+        std::optional<Schedule> schedule_;
         Real runningSpread_;
         Protection::Side side_ = Protection::Buyer;
         Real nominal_ = 1.0;
