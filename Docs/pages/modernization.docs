@@ -25,8 +25,8 @@
     \c QL_USE_STD_* flag. These shims are deprecated; the goal is to move to
     standard C++17 facilities.
 
-    This page records the recommended order of work and, in particular, the
-    flagship first migration.
+    This page records the recommended order of work, completed migrations, and
+    the next steps.
 
     \section modernization_priority What to do first, and why
 
@@ -36,48 +36,45 @@
     touched. In a pricing library a silent change of a number is the most
     dangerous failure mode.
 
-    On that measure, the \c optional shim is the clear first target:
+    \section modernization_optional_done The optional migration (COMPLETED)
 
-    - \c ql/optional.hpp contains an explicit guard that <tt>\#error</tt>s on
+    The \c optional shim was the first target because it carried the highest
+    correctness risk:
+
+    - \c ql/optional.hpp contained an explicit guard that <tt>\#error</tt>ed on
       Boost &ge; 1.91, because Boost 1.91 introduced changes in
       \c boost::optional that <em>silently changed the behavior</em> of the code
-      and would cause it to work incorrectly. It is the only shim with a proven
+      and would cause it to work incorrectly. It was the only shim with a proven
       silent-correctness precedent.
-    - \c optional appears on public, price-affecting APIs: the
+    - \c optional appeared on public, price-affecting APIs: the
       \c includeTodaysCashFlows_ setting (NPV inclusion of today's flows) and
       \c Event::hasOccurred (whether a cash flow has already occurred, which
       drives accrual). A wrong empty-state semantics here changes valuations.
-    - Its blast radius is tractable (about 79 files), which makes it the ideal
-      first step to prove the methodology before tackling the much larger
-      \c shared_ptr shim (around 1,270 files).
+    - Its blast radius was tractable (about 79 files).
 
-    Recommended order: <b>optional</b> first, then \c any, then \c functional /
-    \c tuple, and finally the large \c shared_ptr migration.
+    <b>What was done:</b> All \c ext::optional replaced with \c std::optional,
+    all \c ext::nullopt replaced with \c std::nullopt, all
+    <tt>\#include &lt;ql/optional.hpp&gt;</tt> replaced with
+    <tt>\#include &lt;optional&gt;</tt>. The \c QL_USE_STD_OPTIONAL build flag
+    was removed from all build and configuration files. \c ql/optional.hpp was
+    reduced to a thin deprecated <tt>\#include &lt;optional&gt;</tt>.
 
-    \section modernization_optional The optional migration in detail
+    <b>Verification:</b> full regression suite (100% pass), numeric equivalence
+    harness (byte-identical output across EquityOption, Bonds, BermudanSwaption,
+    FRA, MulticurveBootstrapping, CDS), and grep confirmation of zero leftover
+    \c ext::optional / \c ext::nullopt / \c boost::optional.
 
-    Replace \c ext::optional with \c std::optional and \c ext::nullopt with
-    \c std::nullopt, and replace <tt>\#include &lt;ql/optional.hpp&gt;</tt> with
-    <tt>\#include &lt;optional&gt;</tt> (every translation unit that names
-    \c std::optional must include \c &lt;optional&gt; directly).
+    \section modernization_next Next: the any migration
 
-    \c optional flows from low-level headers upward, so migrate bottom-up to keep
-    the build green at every step:
+    The \c any shim is the next target. Apply the same methodology:
 
-    \code
-    settings.hpp / event.hpp  ->  cashflow.hpp  ->  cashflows/*  ->  instruments/*
-                                                  ->  pricingengines/*
-    termstructures/*          ->  pricingengines/*
-    experimental/*, time/*
-    test-suite/*   (migrate last -- it consumes the whole library)
-    \endcode
+    - Replace \c ext::any with \c std::any and <tt>\#include &lt;ql/any.hpp&gt;</tt>
+      with <tt>\#include &lt;any&gt;</tt>.
+    - Remove the \c QL_USE_STD_ANY option from all build/config files.
+    - Reduce \c ql/any.hpp to a deprecated stub.
+    - Verify with regression suite + numeric harness.
 
-    Headers migrate before their corresponding \c .cpp files. Once the usages are
-    migrated, remove the now-dead \c QL_USE_STD_OPTIONAL option from
-    \c CMakeLists.txt, \c CMakePresets.json, \c configure.ac,
-    \c ql/userconfig.hpp, \c ql/config.hpp.cfg, the \c .ci/userconfig*.alt.hpp
-    files and \c Docs/pages/config.docs, and reduce \c ql/optional.hpp to a thin
-    deprecated <tt>\#include &lt;optional&gt;</tt> for backward compatibility.
+    After \c any, tackle \c shared_ptr (around 1,270 files) using the same pattern.
 
     \section modernization_proof Proving pricing behavior is unchanged
 
