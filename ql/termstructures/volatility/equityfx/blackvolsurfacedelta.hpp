@@ -34,6 +34,7 @@
 #include <ql/time/calendar.hpp>
 #include <ql/time/daycounter.hpp>
 #include <ql/termstructures/volatility/smilesection.hpp>
+#include <optional>
 
 namespace QuantLib {
 
@@ -91,7 +92,7 @@ namespace QuantLib {
                                     const Handle<YieldTermStructure>& foreignTS,
                                     DeltaVolQuote::DeltaType deltaType = DeltaVolQuote::DeltaType::Spot,
                                     DeltaVolQuote::AtmType atmType = DeltaVolQuote::AtmType::AtmDeltaNeutral,
-                                    ext::optional<DeltaVolQuote::DeltaType> atmDeltaType = ext::nullopt,
+                                    std::optional<DeltaVolQuote::DeltaType> atmDeltaType = std::nullopt,
                                     SmileInterpolationMethod interpolationMethod =
                                         SmileInterpolationMethod::Linear,
                                     bool flatStrikeExtrapolation = false,
@@ -100,7 +101,7 @@ namespace QuantLib {
                                     const Period& switchTenor = 0 * Days,
                                     DeltaVolQuote::DeltaType longTermDeltaType = DeltaVolQuote::DeltaType::Fwd,
                                     DeltaVolQuote::AtmType longTermAtmType = DeltaVolQuote::AtmType::AtmDeltaNeutral,
-                                    ext::optional<DeltaVolQuote::DeltaType> longTermAtmDeltaType = ext::nullopt);
+                                    std::optional<DeltaVolQuote::DeltaType> longTermAtmDeltaType = std::nullopt);
         //@}
 
         //! \name TermStructure interface
