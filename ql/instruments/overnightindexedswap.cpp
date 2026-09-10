@@ -23,6 +23,7 @@
 #include <ql/cashflows/fixedratecoupon.hpp>
 #include <ql/cashflows/overnightindexedcoupon.hpp>
 #include <ql/instruments/overnightindexedswap.hpp>
+#include <optional>
 #include <utility>
 
 namespace QuantLib {
@@ -144,7 +145,7 @@ namespace QuantLib {
                                                bool applyObservationShift)
     : FixedVsFloatingSwap(type, std::move(fixedNominals), std::move(fixedSchedule), fixedRate, std::move(fixedDC),
                           overnightNominals, std::move(overnightSchedule), overnightIndex,
-                          spread, DayCounter(), ext::nullopt, paymentLag, paymentCalendar),
+                          spread, DayCounter(), std::nullopt, paymentLag, paymentCalendar),
                           overnightIndex_(overnightIndex),
                           paymentLag_(paymentLag), paymentCalendar_(paymentCalendar),
                           telescopicValueDates_(telescopicValueDates),
