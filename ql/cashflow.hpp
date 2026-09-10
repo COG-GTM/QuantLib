@@ -29,7 +29,6 @@
 #include <ql/math/comparison.hpp>
 #include <ql/patterns/lazyobject.hpp>
 #include <vector>
-#include <ql/optional.hpp>
 #include <optional>
 
 namespace QuantLib {

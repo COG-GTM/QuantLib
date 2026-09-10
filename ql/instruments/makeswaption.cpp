@@ -25,7 +25,6 @@
 #include <ql/instruments/makeswaption.hpp>
 #include <ql/instruments/makevanillaswap.hpp>
 #include <ql/pricingengines/swap/discountingswapengine.hpp>
-#include <ql/optional.hpp>
 #include <ql/settings.hpp>
 #include <utility>
 #include <optional>

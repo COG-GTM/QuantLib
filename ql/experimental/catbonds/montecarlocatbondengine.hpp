@@ -24,7 +24,6 @@
 #ifndef quantlib_montecarlo_catbond_engine_hpp
 #define quantlib_montecarlo_catbond_engine_hpp
 
-#include <ql/optional.hpp>
 #include <ql/experimental/catbonds/catbond.hpp>
 #include <optional>
 

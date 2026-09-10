@@ -73,11 +73,12 @@
     \endcode
 
     Headers migrate before their corresponding \c .cpp files. Once the usages are
-    migrated, remove the now-dead \c QL_USE_STD_OPTIONAL option from
-    \c CMakeLists.txt, \c CMakePresets.json, \c configure.ac,
-    \c ql/userconfig.hpp, \c ql/config.hpp.cfg, the \c .ci/userconfig*.alt.hpp
-    files and \c Docs/pages/config.docs, and reduce \c ql/optional.hpp to a thin
-    deprecated <tt>\#include &lt;optional&gt;</tt> for backward compatibility.
+    migrated, the \c QL_USE_STD_OPTIONAL option is dead and is removed from the
+    build configuration, and \c ql/optional.hpp is reduced to a thin deprecated
+    <tt>\#include &lt;optional&gt;</tt> for backward compatibility.
+
+    This migration is complete: the library and test suite use \c std::optional
+    directly, and \c ql/optional.hpp only remains as a deprecated alias.
 
     \section modernization_proof Proving pricing behavior is unchanged
 

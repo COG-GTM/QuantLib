@@ -27,7 +27,6 @@
 
 #include <ql/termstructures/yield/ratehelpers.hpp>
 #include <ql/instruments/constnotionalcrosscurrencyfixedvsfloatingswap.hpp>
-#include <ql/optional.hpp>
 #include <optional>
 
 namespace QuantLib {

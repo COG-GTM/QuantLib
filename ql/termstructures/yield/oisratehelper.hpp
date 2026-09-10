@@ -27,7 +27,6 @@
 
 #include <ql/termstructures/yield/ratehelpers.hpp>
 #include <ql/instruments/overnightindexedswap.hpp>
-#include <ql/optional.hpp>
 #include <variant>
 #include <optional>
 

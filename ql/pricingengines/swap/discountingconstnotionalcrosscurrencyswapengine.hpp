@@ -27,7 +27,6 @@
 #include <ql/handle.hpp>
 #include <ql/instruments/constnotionalcrosscurrencyswap.hpp>
 #include <ql/termstructures/yieldtermstructure.hpp>
-#include <ql/optional.hpp>
 #include <optional>
 
 namespace QuantLib {

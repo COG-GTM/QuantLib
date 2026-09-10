@@ -25,7 +25,6 @@
 #include <ql/math/integrals/kronrodintegral.hpp>
 #include <ql/pricingengines/blackformula.hpp>
 #include <ql/termstructures/volatility/swaption/swaptionvolcube.hpp>
-#include <ql/optional.hpp>
 #include <utility>
 #include <optional>
 

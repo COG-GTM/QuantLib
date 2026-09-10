@@ -28,7 +28,6 @@
 #include <ql/termstructures/yield/piecewiseyieldcurve.hpp>
 #include <ql/time/calendars/weekendsonly.hpp>
 #include <ql/time/daycounters/actual360.hpp>
-#include <ql/optional.hpp>
 #include <utility>
 #include <optional>
 

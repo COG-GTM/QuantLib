@@ -31,7 +31,6 @@
 #include <ql/experimental/coupons/swapspreadindex.hpp>
 #include <ql/math/integrals/gaussianquadratures.hpp>
 #include <ql/math/distributions/normaldistribution.hpp>
-#include <ql/optional.hpp>
 #include <optional>
 
 namespace QuantLib {
