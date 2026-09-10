@@ -56,6 +56,13 @@
 
     \section modernization_optional The optional migration in detail
 
+    <b>Status: complete.</b> All usages in \c ql/ and \c test-suite/ now spell
+    \c std::optional / \c std::nullopt and include \c &lt;optional&gt; directly;
+    the \c QL_USE_STD_OPTIONAL option has been removed and \c ql/optional.hpp
+    remains only as a thin deprecated alias header (no longer included by
+    \c ql/quantlib.hpp). The steps below are retained as the template for the
+    remaining shims (\c any, \c functional / \c tuple, \c shared_ptr).
+
     Replace \c ext::optional with \c std::optional and \c ext::nullopt with
     \c std::nullopt, and replace <tt>\#include &lt;ql/optional.hpp&gt;</tt> with
     <tt>\#include &lt;optional&gt;</tt> (every translation unit that names

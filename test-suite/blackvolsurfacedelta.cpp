@@ -22,7 +22,7 @@
 #include "utilities.hpp"
 #include <boost/make_shared.hpp>
 #include <boost/test/unit_test.hpp>
-#include <ql/optional.hpp>
+#include <optional>
 #include <ql/pricingengines/blackformula.hpp>
 #include <ql/quotes/simplequote.hpp>
 #include <ql/termstructures/volatility/equityfx/blackvolsurfacedelta.hpp>
@@ -166,7 +166,7 @@ BOOST_AUTO_TEST_CASE(testTimeExtrapolation) {
 
     BlackVolatilitySurfaceDelta surface1(refDate, dates, putDeltas, callDeltas, hasAtm, vols, ActualActual(ActualActual::ISDA),
                                          TARGET(), spot, dts, fts, DeltaVolQuote::DeltaType::Spot, DeltaVolQuote::AtmType::AtmSpot,
-                                         ext::nullopt, BlackVolatilitySurfaceDelta::SmileInterpolationMethod::Linear, false,
+                                         std::nullopt, BlackVolatilitySurfaceDelta::SmileInterpolationMethod::Linear, false,
                                          BlackVolTimeExtrapolation::FlatVolatility);
 
     QL_CHECK_CLOSE(surface1.blackVol(refDate + Period(2, Years), atmStrike), 0.095, 1e-8);
@@ -180,7 +180,7 @@ BOOST_AUTO_TEST_CASE(testTimeExtrapolation) {
 
     BlackVolatilitySurfaceDelta surface2(refDate, dates, putDeltas, callDeltas, hasAtm, vols, ActualActual(ActualActual::ISDA),
                                          TARGET(), spot, dts, fts, DeltaVolQuote::DeltaType::Spot, DeltaVolQuote::AtmType::AtmSpot,
-                                         ext::nullopt, BlackVolatilitySurfaceDelta::SmileInterpolationMethod::Linear, false,
+                                         std::nullopt, BlackVolatilitySurfaceDelta::SmileInterpolationMethod::Linear, false,
                                          BlackVolTimeExtrapolation::LinearVariance);
 
     QL_CHECK_CLOSE(surface2.blackVol(refDate + Period(2, Years), atmStrike), 0.095, 1e-8);
@@ -194,7 +194,7 @@ BOOST_AUTO_TEST_CASE(testTimeExtrapolation) {
 
     BlackVolatilitySurfaceDelta surface3(refDate, dates, putDeltas, callDeltas, hasAtm, vols, ActualActual(ActualActual::ISDA),
                                          TARGET(), spot, dts, fts, DeltaVolQuote::DeltaType::Spot, DeltaVolQuote::AtmType::AtmSpot,
-                                         ext::nullopt, BlackVolatilitySurfaceDelta::SmileInterpolationMethod::Linear, false,
+                                         std::nullopt, BlackVolatilitySurfaceDelta::SmileInterpolationMethod::Linear, false,
                                          BlackVolTimeExtrapolation::UseInterpolator);
     surface3.enableExtrapolation();
 
@@ -240,7 +240,7 @@ BOOST_AUTO_TEST_CASE(testSmileInterpolation) {
 
     BlackVolatilitySurfaceDelta surface1(refDate, dates, putDeltas, callDeltas, hasAtm, vols, ActualActual(ActualActual::ISDA),
                                          TARGET(), spot, dts, fts, DeltaVolQuote::DeltaType::Spot, DeltaVolQuote::AtmType::AtmSpot,
-                                         ext::nullopt, BlackVolatilitySurfaceDelta::SmileInterpolationMethod::Linear, false,
+                                         std::nullopt, BlackVolatilitySurfaceDelta::SmileInterpolationMethod::Linear, false,
                                          BlackVolTimeExtrapolation::FlatVolatility);
 
     auto smile = surface1.blackVolSmile(refDate + Period(6, Months));
@@ -254,7 +254,7 @@ BOOST_AUTO_TEST_CASE(testSmileInterpolation) {
 
     BlackVolatilitySurfaceDelta surface2(refDate, dates, putDeltas, callDeltas, hasAtm, vols, ActualActual(ActualActual::ISDA),
                                          TARGET(), spot, dts, fts, DeltaVolQuote::DeltaType::Spot, DeltaVolQuote::AtmType::AtmSpot,
-                                         ext::nullopt, BlackVolatilitySurfaceDelta::SmileInterpolationMethod::NaturalCubic, false,
+                                         std::nullopt, BlackVolatilitySurfaceDelta::SmileInterpolationMethod::NaturalCubic, false,
                                          BlackVolTimeExtrapolation::FlatVolatility);
 
     smile = surface2.blackVolSmile(refDate + Period(6, Months));
@@ -269,7 +269,7 @@ BOOST_AUTO_TEST_CASE(testSmileInterpolation) {
 
     BlackVolatilitySurfaceDelta surface3(refDate, dates, putDeltas, callDeltas, hasAtm, vols, ActualActual(ActualActual::ISDA),
                                          TARGET(), spot, dts, fts, DeltaVolQuote::DeltaType::Spot, DeltaVolQuote::AtmType::AtmSpot,
-                                         ext::nullopt, BlackVolatilitySurfaceDelta::SmileInterpolationMethod::FinancialCubic, false,
+                                         std::nullopt, BlackVolatilitySurfaceDelta::SmileInterpolationMethod::FinancialCubic, false,
                                          BlackVolTimeExtrapolation::FlatVolatility);
 
     smile = surface3.blackVolSmile(refDate + Period(6, Months));
@@ -283,7 +283,7 @@ BOOST_AUTO_TEST_CASE(testSmileInterpolation) {
 
     BlackVolatilitySurfaceDelta surface4(refDate, dates, putDeltas, callDeltas, hasAtm, vols, ActualActual(ActualActual::ISDA),
                                          TARGET(), spot, dts, fts, DeltaVolQuote::DeltaType::Spot, DeltaVolQuote::AtmType::AtmSpot,
-                                         ext::nullopt, BlackVolatilitySurfaceDelta::SmileInterpolationMethod::CubicSpline, false,
+                                         std::nullopt, BlackVolatilitySurfaceDelta::SmileInterpolationMethod::CubicSpline, false,
                                          BlackVolTimeExtrapolation::FlatVolatility);
 
     smile = surface4.blackVolSmile(refDate + Period(6, Months));
