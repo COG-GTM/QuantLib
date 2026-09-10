@@ -30,6 +30,7 @@
 #include <ql/termstructures/yieldtermstructure.hpp>
 #include <ql/time/calendars/weekendsonly.hpp>
 #include <ql/utilities/vectors.hpp>
+#include <optional>
 #include <utility>
 #include <algorithm>
 #include <type_traits>
@@ -523,7 +524,7 @@ namespace QuantLib {
         return *this;
     }
 
-    OvernightLeg& OvernightLeg::withLastRecentPeriod(const ext::optional<Period>& lastRecentPeriod) {
+    OvernightLeg& OvernightLeg::withLastRecentPeriod(const std::optional<Period>& lastRecentPeriod) {
         lastRecentPeriod_ = lastRecentPeriod;
         return *this;
     }
