@@ -36,6 +36,7 @@
 #include <ql/termstructures/yieldtermstructure.hpp>
 #include <ql/optional.hpp>
 #include <utility>
+#include <optional>
 
 namespace QuantLib {
 
@@ -45,7 +46,7 @@ namespace QuantLib {
 
     IborCouponPricer::IborCouponPricer(
             Handle<OptionletVolatilityStructure> v,
-            ext::optional<bool> useIndexedCoupon)
+            std::optional<bool> useIndexedCoupon)
         : capletVol_(std::move(v)),
           useIndexedCoupon_(useIndexedCoupon ?
                             *useIndexedCoupon :
