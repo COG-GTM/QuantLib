@@ -23,6 +23,7 @@
 #include <ql/settings.hpp>
 #include <ql/utilities/dataparsers.hpp>
 #include <ql/version.hpp>
+#include <optional>
 #include <iostream>
 #include <iomanip>
 
@@ -39,7 +40,7 @@ namespace {
         */
 
         // QuantLib::Settings::instance().includeReferenceDateCashFlows() = true;
-        // QuantLib::Settings::instance().includeTodaysCashFlows() = ext::nullopt;
+        // QuantLib::Settings::instance().includeTodaysCashFlows() = std::nullopt;
 
         QuantLib::Settings::instance().evaluationDate() = evaluationDate;
     }
