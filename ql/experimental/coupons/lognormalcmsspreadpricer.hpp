@@ -32,6 +32,7 @@
 #include <ql/math/integrals/gaussianquadratures.hpp>
 #include <ql/math/distributions/normaldistribution.hpp>
 #include <ql/optional.hpp>
+#include <optional>
 
 namespace QuantLib {
 
@@ -65,7 +66,7 @@ namespace QuantLib {
             const Handle<Quote>& correlation,
             Handle<YieldTermStructure> couponDiscountCurve = Handle<YieldTermStructure>(),
             Size IntegrationPoints = 16,
-            const ext::optional<VolatilityType>& volatilityType = ext::nullopt,
+            const std::optional<VolatilityType>& volatilityType = std::nullopt,
             Real shift1 = Null<Real>(),
             Real shift2 = Null<Real>());
 

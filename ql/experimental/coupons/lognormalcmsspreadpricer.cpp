@@ -27,6 +27,7 @@
 #include <ql/termstructures/volatility/swaption/swaptionvolcube.hpp>
 #include <ql/optional.hpp>
 #include <utility>
+#include <optional>
 
 using std::sqrt;
 
@@ -47,7 +48,7 @@ namespace QuantLib {
         const Handle<Quote>& correlation,
         Handle<YieldTermStructure> couponDiscountCurve,
         const Size integrationPoints,
-        const ext::optional<VolatilityType>& volatilityType,
+        const std::optional<VolatilityType>& volatilityType,
         const Real shift1,
         const Real shift2)
     : CmsSpreadCouponPricer(correlation), cmsPricer_(cmsPricer),
