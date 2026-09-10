@@ -36,9 +36,9 @@
     touched. In a pricing library a silent change of a number is the most
     dangerous failure mode.
 
-    On that measure, the \c optional shim is the clear first target:
+    On that measure, the \c optional shim was the clear first target (now done):
 
-    - \c ql/optional.hpp contains an explicit guard that <tt>\#error</tt>s on
+    - \c ql/optional.hpp contained an explicit guard that <tt>\#error</tt>ed on
       Boost &ge; 1.91, because Boost 1.91 introduced changes in
       \c boost::optional that <em>silently changed the behavior</em> of the code
       and would cause it to work incorrectly. It is the only shim with a proven
