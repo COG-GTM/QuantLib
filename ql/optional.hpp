@@ -1,7 +1,7 @@
 /* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
- Copyright (C) 2023 Jonathan Sweemer
+ Copyright (C) 2023 Klaus Spanderen
 
  This file is part of QuantLib, a free-software/open-source library
  for financial quantitative analysts and developers - http://quantlib.org/
@@ -18,35 +18,23 @@
 */
 
 /*! \file optional.hpp
-    \brief Maps optional to either the boost or std implementation
+    \brief Deprecated compatibility header; use <optional> directly
+    \deprecated Use std::optional and std::nullopt instead.
 */
 
 #ifndef quantlib_optional_hpp
 #define quantlib_optional_hpp
 
 #include <ql/qldefines.hpp>
-
-#if defined(QL_USE_STD_OPTIONAL)
 #include <optional>
-#else
-#if BOOST_VERSION >= 109100
-#error Boost 1.91 introduced changes in boost::optional that silently changed the behavior of our code and would cause it to work incorrectly.  Use std::optional instead.
-#endif
-// Deprecated in version 1.39
-#pragma message("Warning: using boost::optional is deprecated.  Enable std::optional instead.")
-#include <boost/optional.hpp>
-#endif
 
 namespace QuantLib::ext {
 
-        #if defined(QL_USE_STD_OPTIONAL)
-        using std::optional;                    // NOLINT(misc-unused-using-decls)
-        inline constexpr const std::nullopt_t& nullopt = std::nullopt;
-        #else
-        using boost::optional;                  // NOLINT(misc-unused-using-decls)
-        inline constexpr const boost::none_t& nullopt = boost::none;
-        #endif
+    /*! \deprecated Use std::optional instead. */
+    using std::optional;                    // NOLINT(misc-unused-using-decls)
+    /*! \deprecated Use std::nullopt instead. */
+    inline constexpr const std::nullopt_t& nullopt = std::nullopt;
 
-    }
+}
 
 #endif

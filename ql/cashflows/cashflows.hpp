@@ -31,6 +31,7 @@
 #include <ql/cashflow.hpp>
 #include <ql/interestrate.hpp>
 #include <ql/shared_ptr.hpp>
+#include <optional>
 
 namespace QuantLib {
 
@@ -47,7 +48,7 @@ namespace QuantLib {
                       DayCounter dayCounter,
                       Compounding comp,
                       Frequency freq,
-                      const ext::optional<bool>& includeSettlementDateFlows,
+                      const std::optional<bool>& includeSettlementDateFlows,
                       Date settlementDate,
                       Date npvDate);
 
@@ -61,7 +62,7 @@ namespace QuantLib {
             DayCounter dayCounter_;
             Compounding compounding_;
             Frequency frequency_;
-            ext::optional<bool> includeSettlementDateFlows_;
+            std::optional<bool> includeSettlementDateFlows_;
             Date settlementDate_, npvDate_;
         };
       public:
@@ -77,7 +78,7 @@ namespace QuantLib {
         static Date startDate(const Leg& leg);
         static Date maturityDate(const Leg& leg);
         static bool isExpired(const Leg& leg,
-                              const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                              const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                               Date settlementDate = Date());
         //@}
 
@@ -86,28 +87,28 @@ namespace QuantLib {
         //! the last cashflow paying before or at the given date
         static Leg::const_reverse_iterator
         previousCashFlow(const Leg& leg,
-                         const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                         const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                          Date settlementDate = Date());
         //! the first cashflow paying after the given date
         static Leg::const_iterator
         nextCashFlow(const Leg& leg,
-                     const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                     const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                      Date settlementDate = Date());
         static Date
         previousCashFlowDate(const Leg& leg,
-                             const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                             const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                              Date settlementDate = Date());
         static Date
         nextCashFlowDate(const Leg& leg,
-                         const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                         const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                          Date settlementDate = Date());
         static Real
         previousCashFlowAmount(const Leg& leg,
-                               const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                               const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                                Date settlementDate = Date());
         static Real
         nextCashFlowAmount(const Leg& leg,
-                           const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                           const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                            Date settlementDate = Date());
         //@}
 
@@ -115,52 +116,52 @@ namespace QuantLib {
         //@{
         static Rate
         previousCouponRate(const Leg& leg,
-                           const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                           const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                            Date settlementDate = Date());
         static Rate
         nextCouponRate(const Leg& leg,
-                       const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                       const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                        Date settlementDate = Date());
 
         static Real
         nominal(const Leg& leg,
-                const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                 Date settlementDate = Date());
         static Date
         accrualStartDate(const Leg& leg,
-                         const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                         const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                          Date settlementDate = Date());
         static Date
         accrualEndDate(const Leg& leg,
-                       const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                       const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                        Date settlementDate = Date());
         static Date
         referencePeriodStart(const Leg& leg,
-                             const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                             const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                              Date settlementDate = Date());
         static Date
         referencePeriodEnd(const Leg& leg,
-                           const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                           const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                            Date settlementDate = Date());
         static Time
         accrualPeriod(const Leg& leg,
-                      const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                      const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                       Date settlementDate = Date());
         static Date::serial_type
         accrualDays(const Leg& leg,
-                    const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                    const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                     Date settlementDate = Date());
         static Time
         accruedPeriod(const Leg& leg,
-                      const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                      const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                       Date settlementDate = Date());
         static Date::serial_type
         accruedDays(const Leg& leg,
-                    const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                    const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                     Date settlementDate = Date());
         static Real
         accruedAmount(const Leg& leg,
-                      const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                      const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                       Date settlementDate = Date());
         //@}
 
@@ -172,7 +173,7 @@ namespace QuantLib {
         */
         static Real npv(const Leg& leg,
                         const YieldTermStructure& discountCurve,
-                        const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                        const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                         Date settlementDate = Date(),
                         Date npvDate = Date());
         //! Basis-point sensitivity of the cash flows.
@@ -183,7 +184,7 @@ namespace QuantLib {
         */
         static Real bps(const Leg& leg,
                         const YieldTermStructure& discountCurve,
-                        const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                        const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                         Date settlementDate = Date(),
                         Date npvDate = Date());
 
@@ -193,7 +194,7 @@ namespace QuantLib {
         */
         static std::pair<Real, Real> npvbps(const Leg& leg,
                                             const YieldTermStructure& discountCurve,
-                                            const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                                            const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                                             Date settlementDate = Date(),
                                             Date npvDate = Date());
 
@@ -205,7 +206,7 @@ namespace QuantLib {
         */
         static Rate atmRate(const Leg& leg,
                             const YieldTermStructure& discountCurve,
-                            const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                            const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                             Date settlementDate = Date(),
                             Date npvDate = Date(),
                             Real npv = Null<Real>());
@@ -224,7 +225,7 @@ namespace QuantLib {
         */
         static Real npv(const Leg& leg,
                         const InterestRate& yield,
-                        const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                        const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                         Date settlementDate = Date(),
                         Date npvDate = Date());
         static Real npv(const Leg& leg,
@@ -232,7 +233,7 @@ namespace QuantLib {
                         const DayCounter& dayCounter,
                         Compounding compounding,
                         Frequency frequency,
-                        const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                        const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                         Date settlementDate = Date(),
                         Date npvDate = Date());
         //! Basis-point sensitivity of the cash flows.
@@ -245,7 +246,7 @@ namespace QuantLib {
         */
         static Real bps(const Leg& leg,
                         const InterestRate& yield,
-                        const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                        const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                         Date settlementDate = Date(),
                         Date npvDate = Date());
         static Real bps(const Leg& leg,
@@ -253,7 +254,7 @@ namespace QuantLib {
                         const DayCounter& dayCounter,
                         Compounding compounding,
                         Frequency frequency,
-                        const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                        const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                         Date settlementDate = Date(),
                         Date npvDate = Date());
         //! Implied internal rate of return.
@@ -266,7 +267,7 @@ namespace QuantLib {
                           const DayCounter& dayCounter,
                           Compounding compounding,
                           Frequency frequency,
-                          const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                          const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                           Date settlementDate = Date(),
                           Date npvDate = Date(),
                           Real accuracy = 1.0e-10,
@@ -280,7 +281,7 @@ namespace QuantLib {
                           const DayCounter& dayCounter,
                           Compounding compounding,
                           Frequency frequency,
-                          const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                          const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                           Date settlementDate = Date(),
                           Date npvDate = Date(),
                           Real accuracy = 1.0e-10,
@@ -318,7 +319,7 @@ namespace QuantLib {
         static Time duration(const Leg& leg,
                              const InterestRate& yield,
                              Duration::Type type,
-                             const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                             const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                              Date settlementDate = Date(),
                              Date npvDate = Date());
         static Time duration(const Leg& leg,
@@ -327,7 +328,7 @@ namespace QuantLib {
                              Compounding compounding,
                              Frequency frequency,
                              Duration::Type type,
-                             const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                             const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                              Date settlementDate = Date(),
                              Date npvDate = Date());
 
@@ -341,7 +342,7 @@ namespace QuantLib {
         */
         static Real convexity(const Leg& leg,
                               const InterestRate& yield,
-                              const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                              const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                               Date settlementDate = Date(),
                               Date npvDate = Date());
         static Real convexity(const Leg& leg,
@@ -349,7 +350,7 @@ namespace QuantLib {
                               const DayCounter& dayCounter,
                               Compounding compounding,
                               Frequency frequency,
-                              const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                              const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                               Date settlementDate = Date(),
                               Date npvDate = Date());
 
@@ -359,7 +360,7 @@ namespace QuantLib {
         */
         static Real basisPointValue(const Leg& leg,
                                     const InterestRate& yield,
-                                    const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                                    const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                                     Date settlementDate = Date(),
                                     Date npvDate = Date());
         static Real basisPointValue(const Leg& leg,
@@ -367,7 +368,7 @@ namespace QuantLib {
                                     const DayCounter& dayCounter,
                                     Compounding compounding,
                                     Frequency frequency,
-                                    const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                                    const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                                     Date settlementDate = Date(),
                                     Date npvDate = Date());
 
@@ -378,7 +379,7 @@ namespace QuantLib {
         */
         static Real yieldValueBasisPoint(const Leg& leg,
                                          const InterestRate& yield,
-                                         const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                                         const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                                          Date settlementDate = Date(),
                                          Date npvDate = Date());
         static Real yieldValueBasisPoint(const Leg& leg,
@@ -386,7 +387,7 @@ namespace QuantLib {
                                          const DayCounter& dayCounter,
                                          Compounding compounding,
                                          Frequency frequency,
-                                         const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                                         const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                                          Date settlementDate = Date(),
                                          Date npvDate = Date());
         //@}
@@ -407,7 +408,7 @@ namespace QuantLib {
                         Spread zSpread,
                         Compounding compounding,
                         Frequency frequency,
-                        const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                        const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                         Date settlementDate = Date(),
                         Date npvDate = Date());
         /*! \deprecated Use the overload without a day counter.
@@ -420,7 +421,7 @@ namespace QuantLib {
                         const DayCounter& dayCounter,
                         Compounding compounding,
                         Frequency frequency,
-                        const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                        const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                         Date settlementDate = Date(),
                         Date npvDate = Date());
         //! implied Z-spread.
@@ -429,7 +430,7 @@ namespace QuantLib {
                               const ext::shared_ptr<YieldTermStructure>&,
                               Compounding compounding,
                               Frequency frequency,
-                              const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                              const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                               Date settlementDate = Date(),
                               Date npvDate = Date(),
                               Real accuracy = 1.0e-10,
@@ -445,7 +446,7 @@ namespace QuantLib {
                               const DayCounter& dayCounter,
                               Compounding compounding,
                               Frequency frequency,
-                              const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                              const std::optional<bool>& includeSettlementDateFlows = std::nullopt,
                               Date settlementDate = Date(),
                               Date npvDate = Date(),
                               Real accuracy = 1.0e-10,
