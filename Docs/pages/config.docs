@@ -16,7 +16,6 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
-
 /*! \page config User configuration
 
     A number of macros is provided for user configuration.  Defining
@@ -152,3 +151,4 @@
     CPUs. Undefined by default.
 
 */
+
