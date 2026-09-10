@@ -18,35 +18,29 @@
 */
 
 /*! \file optional.hpp
-    \brief Maps optional to either the boost or std implementation
+    \brief Deprecated; use <optional> and std::optional instead
 */
 
 #ifndef quantlib_optional_hpp
 #define quantlib_optional_hpp
 
-#include <ql/qldefines.hpp>
+// Deprecated in version 1.43
+#pragma message("Warning: this file is deprecated and will disappear in a future release; use #include <optional> and std::optional instead.")
 
-#if defined(QL_USE_STD_OPTIONAL)
 #include <optional>
-#else
-#if BOOST_VERSION >= 109100
-#error Boost 1.91 introduced changes in boost::optional that silently changed the behavior of our code and would cause it to work incorrectly.  Use std::optional instead.
-#endif
-// Deprecated in version 1.39
-#pragma message("Warning: using boost::optional is deprecated.  Enable std::optional instead.")
-#include <boost/optional.hpp>
-#endif
 
 namespace QuantLib::ext {
 
-        #if defined(QL_USE_STD_OPTIONAL)
-        using std::optional;                    // NOLINT(misc-unused-using-decls)
-        inline constexpr const std::nullopt_t& nullopt = std::nullopt;
-        #else
-        using boost::optional;                  // NOLINT(misc-unused-using-decls)
-        inline constexpr const boost::none_t& nullopt = boost::none;
-        #endif
+    /*! \deprecated Use std::optional instead.
+                    Deprecated in version 1.43.
+    */
+    using std::optional;                    // NOLINT(misc-unused-using-decls)
 
-    }
+    /*! \deprecated Use std::nullopt instead.
+                    Deprecated in version 1.43.
+    */
+    inline constexpr const std::nullopt_t& nullopt = std::nullopt;
+
+}
 
 #endif
