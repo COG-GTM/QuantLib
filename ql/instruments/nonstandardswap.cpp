@@ -30,6 +30,7 @@
 #include <ql/termstructures/yieldtermstructure.hpp>
 #include <ql/optional.hpp>
 #include <utility>
+#include <optional>
 
 namespace QuantLib {
 
@@ -68,7 +69,7 @@ namespace QuantLib {
                                      DayCounter floatingDayCount,
                                      const bool intermediateCapitalExchange,
                                      const bool finalCapitalExchange,
-                                     ext::optional<BusinessDayConvention> paymentConvention)
+                                     std::optional<BusinessDayConvention> paymentConvention)
     : Swap(2), type_(type), fixedNominal_(std::move(fixedNominal)),
       floatingNominal_(floatingNominal), fixedSchedule_(std::move(fixedSchedule)),
       fixedRate_(std::move(fixedRate)), fixedDayCount_(std::move(fixedDayCount)),
@@ -99,7 +100,7 @@ namespace QuantLib {
                                      DayCounter floatingDayCount,
                                      const bool intermediateCapitalExchange,
                                      const bool finalCapitalExchange,
-                                     ext::optional<BusinessDayConvention> paymentConvention)
+                                     std::optional<BusinessDayConvention> paymentConvention)
     : Swap(2), type_(type), fixedNominal_(std::move(fixedNominal)),
       floatingNominal_(std::move(floatingNominal)), fixedSchedule_(std::move(fixedSchedule)),
       fixedRate_(std::move(fixedRate)), fixedDayCount_(std::move(fixedDayCount)),

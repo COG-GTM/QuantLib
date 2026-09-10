@@ -30,6 +30,7 @@
 #include <ql/time/daycounter.hpp>
 #include <ql/time/schedule.hpp>
 #include <ql/optional.hpp>
+#include <optional>
 
 namespace QuantLib {
 
@@ -73,8 +74,8 @@ namespace QuantLib {
                     ext::shared_ptr<IborIndex> iborIndex,
                     Spread spread,
                     DayCounter floatingDayCount,
-                    ext::optional<BusinessDayConvention> paymentConvention = ext::nullopt,
-                    ext::optional<bool> useIndexedCoupons = ext::nullopt);
+                    std::optional<BusinessDayConvention> paymentConvention = std::nullopt,
+                    std::optional<bool> useIndexedCoupons = std::nullopt);
 
       private:
         void setupFloatingArguments(arguments* args) const override;

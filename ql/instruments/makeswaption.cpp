@@ -28,6 +28,7 @@
 #include <ql/optional.hpp>
 #include <ql/settings.hpp>
 #include <utility>
+#include <optional>
 
 namespace QuantLib {
 
@@ -188,7 +189,7 @@ namespace QuantLib {
         return *this;
     }
 
-    MakeSwaption& MakeSwaption::withIndexedCoupons(const ext::optional<bool>& b) {
+    MakeSwaption& MakeSwaption::withIndexedCoupons(const std::optional<bool>& b) {
         useIndexedCoupons_ = b;
         return *this;
     }

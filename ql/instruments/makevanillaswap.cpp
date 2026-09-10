@@ -34,6 +34,7 @@
 #include <ql/currencies/oceania.hpp>
 #include <ql/utilities/null.hpp>
 #include <ql/optional.hpp>
+#include <optional>
 
 namespace QuantLib {
 
@@ -371,7 +372,7 @@ namespace QuantLib {
         return *this;
     }
 
-    MakeVanillaSwap& MakeVanillaSwap::withIndexedCoupons(const ext::optional<bool>& b) {
+    MakeVanillaSwap& MakeVanillaSwap::withIndexedCoupons(const std::optional<bool>& b) {
         useIndexedCoupons_ = b;
         return *this;
     }
