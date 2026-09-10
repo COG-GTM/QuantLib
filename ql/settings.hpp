@@ -29,7 +29,6 @@
 #include <ql/patterns/singleton.hpp>
 #include <ql/time/date.hpp>
 #include <ql/utilities/observablevalue.hpp>
-#include <ql/optional.hpp>  // transitional: re-exports ext::optional for not-yet-migrated layers
 #include <optional>
 
 namespace QuantLib {
