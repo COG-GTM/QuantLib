@@ -28,15 +28,15 @@
 #include <ql/termstructures/yield/piecewiseyieldcurve.hpp>
 #include <ql/time/calendars/weekendsonly.hpp>
 #include <ql/time/daycounters/actual360.hpp>
-#include <ql/optional.hpp>
 #include <utility>
+#include <optional>
 
 namespace QuantLib {
 
     IsdaCdsEngine::IsdaCdsEngine(Handle<DefaultProbabilityTermStructure> probability,
                                  Real recoveryRate,
                                  Handle<YieldTermStructure> discountCurve,
-                                 const ext::optional<bool>& includeSettlementDateFlows,
+                                 const std::optional<bool>& includeSettlementDateFlows,
                                  const NumericalFix numericalFix,
                                  const AccrualBias accrualBias,
                                  const ForwardsInCouponPeriod forwardsInCouponPeriod)
