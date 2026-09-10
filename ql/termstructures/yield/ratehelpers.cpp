@@ -37,6 +37,7 @@
 #include <ql/time/imm.hpp>
 #include <ql/utilities/null_deleter.hpp>
 #include <utility>
+#include <optional>
 
 namespace QuantLib {
 
@@ -466,7 +467,7 @@ namespace QuantLib {
                                    Pillar::Choice pillarChoice,
                                    Date customPillarDate,
                                    bool endOfMonth,
-                                   const ext::optional<bool>& useIndexedCoupons)
+                                   const std::optional<bool>& useIndexedCoupons)
     : SwapRateHelper(rate, swapIndex->tenor(), swapIndex->fixingCalendar(),
         swapIndex->fixedLegTenor().frequency(), swapIndex->fixedLegConvention(),
         swapIndex->dayCounter(), swapIndex->iborIndex(), std::move(spread), fwdStart,
@@ -487,8 +488,8 @@ namespace QuantLib {
                                    Pillar::Choice pillarChoice,
                                    Date customPillarDate,
                                    bool endOfMonth,
-                                   const ext::optional<bool>& useIndexedCoupons,
-                                   const ext::optional<BusinessDayConvention>& floatConvention)
+                                   const std::optional<bool>& useIndexedCoupons,
+                                   const std::optional<BusinessDayConvention>& floatConvention)
     : RelativeDateRateHelper(rate), settlementDays_(settlementDays), tenor_(tenor),
       pillarChoice_(pillarChoice), calendar_(std::move(calendar)),
       fixedConvention_(fixedConvention), fixedFrequency_(fixedFrequency),
@@ -511,8 +512,8 @@ namespace QuantLib {
                                    Pillar::Choice pillarChoice,
                                    Date customPillarDate,
                                    bool endOfMonth,
-                                   const ext::optional<bool>& useIndexedCoupons,
-                                   const ext::optional<BusinessDayConvention>& floatConvention)
+                                   const std::optional<bool>& useIndexedCoupons,
+                                   const std::optional<BusinessDayConvention>& floatConvention)
     : RelativeDateRateHelper(rate, false), startDate_(startDate), endDate_(endDate),
       pillarChoice_(pillarChoice), calendar_(std::move(calendar)),
       fixedConvention_(fixedConvention), fixedFrequency_(fixedFrequency),
