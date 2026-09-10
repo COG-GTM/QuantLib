@@ -21,6 +21,7 @@
 #include <ql/currencies/europe.hpp>
 #include <ql/indexes/iborindex.hpp>
 #include <ql/math/interpolations/loginterpolation.hpp>
+#include <ql/optional.hpp>
 #include <ql/termstructures/yield/piecewiseyieldcurve.hpp>
 #include <ql/termstructures/yield/ratehelpers.hpp>
 #include <ql/termstructures/yield/ultimateforwardtermstructure.hpp>

@@ -22,6 +22,7 @@
 #include "utilities.hpp"
 #include <boost/make_shared.hpp>
 #include <boost/test/unit_test.hpp>
+#include <ql/optional.hpp>
 #include <ql/pricingengines/blackformula.hpp>
 #include <ql/quotes/simplequote.hpp>
 #include <ql/termstructures/volatility/equityfx/blackvolsurfacedelta.hpp>
