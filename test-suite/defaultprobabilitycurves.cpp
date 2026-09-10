@@ -24,7 +24,6 @@
 #include <ql/math/interpolations/backwardflatinterpolation.hpp>
 #include <ql/math/interpolations/linearinterpolation.hpp>
 #include <ql/math/interpolations/loginterpolation.hpp>
-#include <ql/optional.hpp>
 #include <ql/pricingengines/credit/midpointcdsengine.hpp>
 #include <ql/quotes/simplequote.hpp>
 #include <ql/termstructures/credit/defaultprobabilityhelpers.hpp>
@@ -39,6 +38,7 @@
 #include <ql/utilities/dataformatters.hpp>
 #include <iomanip>
 #include <map>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -391,7 +391,7 @@ BOOST_AUTO_TEST_CASE(testUpfrontBootstrap) {
     // This checks that UpfrontCdsHelper::impliedQuote() didn't
     // override the flag permanently; after the bootstrap, it should
     // go back to its previous value.
-    ext::optional<bool> flag = Settings::instance().includeTodaysCashFlows();
+    std::optional<bool> flag = Settings::instance().includeTodaysCashFlows();
     if (flag != false)
         BOOST_ERROR("Cash-flow settings improperly modified");
 }
