@@ -1824,6 +1824,53 @@ BOOST_AUTO_TEST_CASE(testBasisPointValue) {
     }
 }
 
+BOOST_AUTO_TEST_CASE(testSettlementDateSkipsNonBusinessDays) {
+    BOOST_TEST_MESSAGE(
+        "Testing that bond settlement advances by business days...");
+
+    // 4.75% semiannual, 30/360 (Bond Basis), T+2, US government-bond
+    // calendar; street accrued (Bloomberg) for the 2-Oct-2026 trade is 1.860417
+    Calendar calendar = UnitedStates(UnitedStates::GovernmentBond);
+    Date issueDate(15, May, 2024);
+    Date maturity(15, May, 2031);
+    Schedule schedule(issueDate, maturity, Period(Semiannual), calendar,
+                      Unadjusted, Unadjusted, DateGeneration::Backward, false);
+    FixedRateBond bond(2, 100.0, schedule, std::vector<Rate>(1, 0.0475),
+                       Thirty360(Thirty360::BondBasis), Following, 100.0, issueDate);
+
+    struct test_case {
+        Date tradeDate;
+        Date settlementDate;
+        Real accrued;
+    };
+    test_case cases[] = {
+        { Date(28, September, 2026), Date(30, September, 2026), 1.781250 },
+        { Date(1, October, 2026),    Date(5, October, 2026),    1.847222 },
+        { Date(2, October, 2026),    Date(6, October, 2026),    1.860417 },
+        { Date(9, October, 2026),    Date(14, October, 2026),   1.965972 },
+        { Date(25, November, 2026),  Date(30, November, 2026),  0.197917 },
+        { Date(24, December, 2026),  Date(29, December, 2026),  0.580556 },
+        { Date(31, December, 2026),  Date(5, January, 2027),    0.659722 },
+        { Date(10, May, 2024),       issueDate,                 0.0 },
+    };
+
+    for (auto& c : cases) {
+        Settings::instance().evaluationDate() = c.tradeDate;
+
+        Date settlement = bond.settlementDate();
+        if (settlement != c.settlementDate)
+            BOOST_ERROR("wrong settlement date for trade date " << c.tradeDate
+                        << "\n    calculated: " << settlement
+                        << "\n    expected:   " << c.settlementDate);
+        if (bond.settlementDate(c.tradeDate) != c.settlementDate)
+            BOOST_ERROR("wrong settlement date for explicit trade date " << c.tradeDate
+                        << "\n    calculated: " << bond.settlementDate(c.tradeDate)
+                        << "\n    expected:   " << c.settlementDate);
+
+        ASSERT_CLOSE("accrued", c.tradeDate, bond.accruedAmount(), c.accrued, 1e-6);
+    }
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE_END()
