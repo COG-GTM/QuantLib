@@ -1824,6 +1824,51 @@ BOOST_AUTO_TEST_CASE(testBasisPointValue) {
     }
 }
 
+BOOST_AUTO_TEST_CASE(testSettlementDaysAreBusinessDays) {
+    BOOST_TEST_MESSAGE(
+        "Testing that bond settlement advances business days over weekends and holidays...");
+
+    // 4.75% semiannual, 30/360 (Bond Basis), T+2, US government-bond calendar.
+    // Accrued amounts cross-checked against Bloomberg.
+    Calendar calendar = UnitedStates(UnitedStates::GovernmentBond);
+    Natural settlementDays = 2;
+    Date issueDate(15, May, 2024);
+    Date maturity(15, May, 2031);
+    DayCounter dayCounter = Thirty360(Thirty360::BondBasis);
+
+    Schedule schedule(issueDate, maturity, Period(Semiannual),
+                      calendar, Unadjusted, Unadjusted,
+                      DateGeneration::Backward, false);
+
+    FixedRateBond bond(settlementDays, 100.0, schedule,
+                       std::vector<Rate>(1, 0.0475), dayCounter);
+
+    struct test_case {
+        Date tradeDate;
+        Date expectedSettlement;
+        Real expectedAccrued;
+    };
+    test_case cases[] = {
+        // Fri trade: T+2 skips the weekend and settles Tue, not Mon
+        { Date(2, October, 2026),  Date(6, October, 2026),  1.860417 },
+        // Wed before Thanksgiving: Thu is a holiday, T+2 lands Mon
+        { Date(25, November, 2026), Date(30, November, 2026), 0.197917 },
+        // Christmas Eve: Christmas Day is a holiday, T+2 lands Tue
+        { Date(24, December, 2026), Date(29, December, 2026), 0.580556 },
+        // weekday trades whose T+2 span is all business days are unaffected
+        { Date(28, September, 2026), Date(30, September, 2026), 1.781250 },
+        { Date(1, October, 2026),   Date(5, October, 2026),  1.847222 },
+    };
+
+    for (auto& i : cases) {
+        Settings::instance().evaluationDate() = i.tradeDate;
+        Date settlement = bond.settlementDate();
+        BOOST_CHECK_EQUAL(settlement, i.expectedSettlement);
+        Real accrued = bond.accruedAmount(settlement);
+        ASSERT_CLOSE("accrued amount", settlement, accrued, i.expectedAccrued, 1e-6);
+    }
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE_END()
