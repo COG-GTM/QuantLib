@@ -1756,6 +1756,44 @@ BOOST_AUTO_TEST_CASE(testThirty360BondWithSettlementOn31st){
     ASSERT_CLOSE("accrued", settlement, accrued, 0.7, 1e-6);
 }
 
+BOOST_AUTO_TEST_CASE(testSettlementDateUsesBusinessDays) {
+    BOOST_TEST_MESSAGE(
+        "Testing that bond settlement is T+n business days...");
+
+    Calendar calendar = UnitedStates(UnitedStates::GovernmentBond);
+    Date issueDate(15, May, 2024);
+    Schedule schedule(issueDate, Date(15, May, 2031), Period(Semiannual),
+                      calendar, Unadjusted, Unadjusted,
+                      DateGeneration::Backward, false);
+    FixedRateBond bond(2, 100.0, schedule, std::vector<Rate>(1, 0.0475),
+                       Thirty360(Thirty360::BondBasis), Following, 100.0,
+                       issueDate);
+
+    struct Case {
+        Date trade;
+        Date settlement;
+        Integer accrualDays;
+    };
+    const Case cases[] = {
+        {Date(30, September, 2026), Date(2, October, 2026), 137},
+        {Date(2, October, 2026), Date(6, October, 2026), 141},
+        {Date(9, October, 2026), Date(14, October, 2026), 149},
+        {Date(25, November, 2026), Date(30, November, 2026), 15},
+        {Date(24, December, 2026), Date(29, December, 2026), 44},
+    };
+
+    for (const auto& c : cases) {
+        Settings::instance().evaluationDate() = c.trade;
+
+        BOOST_CHECK_EQUAL(bond.settlementDate(c.trade), c.settlement);
+        BOOST_CHECK_EQUAL(bond.settlementDate(), c.settlement);
+
+        Real expectedAccrued = 100.0 * 0.0475 * c.accrualDays / 360.0;
+        ASSERT_CLOSE("accrued amount", c.settlement, bond.accruedAmount(),
+                     expectedAccrued, 1e-10);
+    }
+}
+
 BOOST_AUTO_TEST_CASE(testBasisPointValue) {
 
     BOOST_TEST_MESSAGE("Testing consistency of bond basisPointValue and yieldValueBasisPoint calculations...");

@@ -164,7 +164,7 @@ namespace QuantLib {
             d = Settings::instance().evaluationDate();
 
         // usually, the settlement is at T+n...
-        Date settlement = calendar_.adjust(d + Period(settlementDays_, Days));
+        Date settlement = calendar_.advance(d, settlementDays_, Days);
         // ...but the bond won't be traded until the issue date (if given.)
         if (issueDate_ == Date())
             return settlement;
