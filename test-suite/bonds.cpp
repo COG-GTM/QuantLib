@@ -49,8 +49,11 @@
 #include <ql/pricingengines/bond/bondfunctions.hpp>
 #include <ql/termstructures/credit/flathazardrate.hpp>
 #include <ql/termstructures/yield/flatforward.hpp>
+#include <ql/termstructures/yield/zerocurve.hpp>
+#include <ql/time/daycounters/actual365fixed.hpp>
 #include <ql/currencies/europe.hpp>
 #include <ql/pricingengines/bond/riskybondengine.hpp>
+#include <numeric>
 
 using namespace QuantLib;
 using namespace boost::unit_test_framework;
@@ -1822,6 +1825,190 @@ BOOST_AUTO_TEST_CASE(testBasisPointValue) {
         ASSERT_CLOSE("yieldValueBasisPoint from InterestRate", i.settlement, yvbp2, i.yvbp, tolerance);
 
     }
+}
+
+BOOST_AUTO_TEST_CASE(testKeyRateBasisPointValues) {
+
+    BOOST_TEST_MESSAGE("Testing key-rate basis-point values of fixed-rate bonds...");
+
+    CommonVars vars;
+
+    Date today(15, January, 2025);
+    Settings::instance().evaluationDate() = today;
+
+    DayCounter curveDayCounter = Actual365Fixed();
+    std::vector<Period> keyTenors = { 1*Years, 2*Years, 3*Years, 5*Years,
+                                      7*Years, 10*Years, 20*Years, 30*Years };
+    std::vector<Rate> keyRates = { 0.0310, 0.0335, 0.0350, 0.0372,
+                                   0.0390, 0.0405, 0.0430, 0.0425 };
+    const Size n = keyTenors.size();
+
+    // linear zero curve with a node at each key tenor (plus the reference date)
+    std::vector<Date> curveDates = { today };
+    std::vector<Date> keyDates;
+    for (const auto& tenor : keyTenors) {
+        keyDates.push_back(today + tenor);
+        curveDates.push_back(today + tenor);
+    }
+    auto zeroCurve = [&](const std::vector<Rate>& nodeShifts) {
+        std::vector<Rate> rates = { keyRates.front() + nodeShifts.front() };
+        for (Size j = 0; j < n; ++j)
+            rates.push_back(keyRates[j] + nodeShifts[j + 1]);
+        return ext::make_shared<ZeroCurve>(curveDates, rates, curveDayCounter);
+    };
+    auto baseCurve = zeroCurve(std::vector<Rate>(n + 1, 0.0));
+
+    RelinkableHandle<YieldTermStructure> discountCurve(baseCurve);
+    auto engine = ext::make_shared<DiscountingBondEngine>(discountCurve);
+
+    struct test_case {
+        Period tenor;
+        Rate coupon;
+        Frequency frequency;
+    };
+    test_case cases[] = {
+        { 2*Years, 0.030, Semiannual },
+        { 7*Years, 0.045, Annual },
+        { 10*Years, 0.050, Semiannual },
+        { 30*Years, 0.0425, Semiannual },
+    };
+
+    const Spread basisPoint = 1.0e-4;
+    const Real tolerance = 1.0e-6;
+
+    for (const auto& c : cases) {
+        Date issue = today - 3*Months;
+        Schedule schedule(issue, issue + c.tenor, Period(c.frequency),
+                          vars.calendar, Unadjusted, Unadjusted,
+                          DateGeneration::Backward, false);
+        FixedRateBond bond(2, vars.faceAmount, schedule,
+                           std::vector<Rate>(1, c.coupon),
+                           ActualActual(ActualActual::ISMA),
+                           ModifiedFollowing, 100.0, issue);
+        bond.setPricingEngine(engine);
+        discountCurve.linkTo(baseCurve);
+
+        Real cleanPrice = bond.cleanPrice();
+        Real settlementValue = bond.settlementValue();
+        Real curveCleanPrice = BondFunctions::cleanPrice(bond, *baseCurve);
+
+        std::vector<Real> keyRateBpvs =
+            BondFunctions::keyRateBasisPointValues(bond, *baseCurve, keyTenors);
+        Real parallelBpv = BondFunctions::basisPointValue(bond, *baseCurve);
+
+        BOOST_REQUIRE_EQUAL(keyRateBpvs.size(), n);
+
+        std::ostringstream name;
+        name << c.tenor << " " << io::rate(c.coupon) << " bond";
+
+        // the key-rate buckets add up to the parallel DV01, up to the
+        // third-order terms of the central differences
+        Real sum = std::accumulate(keyRateBpvs.begin(), keyRateBpvs.end(), Real(0.0));
+        checkValue(sum, parallelBpv, 1.0e-6 * std::fabs(parallelBpv),
+                   "sum of key-rate BPVs differs from parallel BPV for " + name.str());
+        if (parallelBpv >= 0.0)
+            BOOST_ERROR("non-negative parallel BPV (" << parallelBpv << ") for " << name.str());
+
+        // the CashFlows interface with explicit key dates gives the same results
+        std::vector<Real> fromCashFlows = CashFlows::keyRateBasisPointValues(
+            bond.cashflows(), *baseCurve, keyDates, false, bond.settlementDate());
+        for (Size i = 0; i < n; ++i)
+            checkValue(fromCashFlows[i], keyRateBpvs[i], 0.0,
+                       "CashFlows key-rate BPV differs from BondFunctions for " +
+                       name.str());
+
+        // each bucket agrees with a direct bump and reprice of the bond,
+        // obtained by shifting the corresponding node of the zero curve
+        for (Size i = 0; i < n; ++i) {
+            std::vector<Rate> nodeShifts(n + 1, 0.0);
+            nodeShifts[i + 1] = basisPoint;
+            if (i == 0)
+                nodeShifts[0] = basisPoint;
+            discountCurve.linkTo(zeroCurve(nodeShifts));
+            Real valueUp = bond.settlementValue();
+            for (auto& x : nodeShifts)
+                x = -x;
+            discountCurve.linkTo(zeroCurve(nodeShifts));
+            Real valueDown = bond.settlementValue();
+            Real repriced = 0.5 * (valueUp - valueDown);
+
+            std::ostringstream bucket;
+            bucket << " in the " << keyTenors[i] << " bucket";
+            checkValue(keyRateBpvs[i], repriced, tolerance,
+                       "key-rate BPV differs from bump-and-reprice for " +
+                       name.str() + bucket.str());
+
+            // no sensitivity to buckets entirely beyond the bond maturity
+            if (i > 0 && keyDates[i - 1] >= bond.maturityDate())
+                checkValue(keyRateBpvs[i], 0.0, 0.0,
+                           "non-zero key-rate BPV for " + name.str() + bucket.str());
+        }
+
+        // the parallel DV01 agrees with a direct parallel bump and reprice
+        discountCurve.linkTo(zeroCurve(std::vector<Rate>(n + 1, basisPoint)));
+        Real valueUp = bond.settlementValue();
+        discountCurve.linkTo(zeroCurve(std::vector<Rate>(n + 1, -basisPoint)));
+        Real valueDown = bond.settlementValue();
+        checkValue(parallelBpv, 0.5 * (valueUp - valueDown), tolerance,
+                   "parallel BPV differs from bump-and-reprice for " + name.str());
+
+        // existing bond results are not affected by the calculation
+        discountCurve.linkTo(baseCurve);
+        checkValue(bond.cleanPrice(), cleanPrice, 0.0,
+                   "clean price changed for " + name.str());
+        checkValue(bond.settlementValue(), settlementValue, 0.0,
+                   "settlement value changed for " + name.str());
+        checkValue(BondFunctions::cleanPrice(bond, *baseCurve), curveCleanPrice, 0.0,
+                   "curve clean price changed for " + name.str());
+    }
+}
+
+BOOST_AUTO_TEST_CASE(testKeyRateBasisPointValuesInputs) {
+
+    BOOST_TEST_MESSAGE("Testing key-rate basis-point value inputs...");
+
+    CommonVars vars;
+
+    Date today(15, January, 2025);
+    Settings::instance().evaluationDate() = today;
+
+    auto curve = ext::make_shared<FlatForward>(today, 0.04, Actual365Fixed());
+
+    Date issue = today - 1*Months;
+    Schedule schedule(issue, issue + 5*Years, Period(Semiannual),
+                      vars.calendar, Unadjusted, Unadjusted,
+                      DateGeneration::Backward, false);
+    FixedRateBond bond(2, vars.faceAmount, schedule,
+                       std::vector<Rate>(1, 0.04),
+                       ActualActual(ActualActual::ISMA),
+                       ModifiedFollowing, 100.0, issue);
+
+    // a single key rate is a parallel shift
+    std::vector<Real> single =
+        BondFunctions::keyRateBasisPointValues(bond, *curve, { 5*Years });
+    BOOST_REQUIRE_EQUAL(single.size(), Size(1));
+    checkValue(single[0], BondFunctions::basisPointValue(bond, *curve), 0.0,
+               "single key-rate BPV differs from parallel BPV");
+
+    // key tenors short of the bond maturity: the last bucket takes the tail
+    std::vector<Real> shortKeys =
+        BondFunctions::keyRateBasisPointValues(bond, *curve, { 1*Years, 2*Years });
+    checkValue(shortKeys[0] + shortKeys[1], BondFunctions::basisPointValue(bond, *curve),
+               1.0e-6, "sum of key-rate BPVs differs from parallel BPV for short keys");
+
+    BOOST_CHECK_THROW(
+        BondFunctions::keyRateBasisPointValues(bond, *curve, std::vector<Period>()),
+        Error);
+    BOOST_CHECK_THROW(
+        BondFunctions::keyRateBasisPointValues(bond, *curve, { 5*Years, 2*Years }),
+        Error);
+    BOOST_CHECK_THROW(
+        BondFunctions::keyRateBasisPointValues(bond, *curve, { 2*Years, 2*Years }),
+        Error);
+    BOOST_CHECK_THROW(
+        CashFlows::keyRateBasisPointValues(bond.cashflows(), *curve,
+                                           { today - 1, today + 1*Years }),
+        Error);
 }
 
 BOOST_AUTO_TEST_CASE(testFixingConvention) {

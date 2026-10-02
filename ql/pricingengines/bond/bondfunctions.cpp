@@ -25,6 +25,7 @@
 
 #include <ql/math/solvers1d/newtonsafe.hpp>
 #include <ql/pricingengines/bond/bondfunctions.hpp>
+#include <ql/termstructures/yieldtermstructure.hpp>
 
 namespace QuantLib {
 
@@ -275,6 +276,41 @@ namespace QuantLib {
         return CashFlows::bps(bond.cashflows(), discountCurve,
                               false, settlement) *
             100.0 / bond.notional(settlement);
+    }
+
+    Real BondFunctions::basisPointValue(const Bond& bond,
+                                        const YieldTermStructure& discountCurve,
+                                        Date settlement) {
+        if (settlement == Date())
+            settlement = bond.settlementDate();
+
+        QL_REQUIRE(BondFunctions::isTradable(bond, settlement),
+                   "non tradable at " << settlement <<
+                   " (maturity being " << bond.maturityDate() << ")");
+
+        return CashFlows::basisPointValue(bond.cashflows(), discountCurve,
+                                          false, settlement);
+    }
+
+    std::vector<Real>
+    BondFunctions::keyRateBasisPointValues(const Bond& bond,
+                                           const YieldTermStructure& discountCurve,
+                                           const std::vector<Period>& keyTenors,
+                                           Date settlement) {
+        if (settlement == Date())
+            settlement = bond.settlementDate();
+
+        QL_REQUIRE(BondFunctions::isTradable(bond, settlement),
+                   "non tradable at " << settlement <<
+                   " (maturity being " << bond.maturityDate() << ")");
+
+        std::vector<Date> keyDates;
+        keyDates.reserve(keyTenors.size());
+        for (const auto& tenor : keyTenors)
+            keyDates.push_back(discountCurve.referenceDate() + tenor);
+
+        return CashFlows::keyRateBasisPointValues(bond.cashflows(), discountCurve,
+                                                  keyDates, false, settlement);
     }
 
     Rate BondFunctions::atmRate(const Bond& bond,

@@ -28,7 +28,9 @@
 #include <ql/patterns/visitor.hpp>
 #include <ql/quotes/simplequote.hpp>
 #include <ql/termstructures/yield/flatforward.hpp>
+#include <ql/termstructures/yield/piecewisezerospreadedtermstructure.hpp>
 #include <ql/termstructures/yield/zerospreadedtermstructure.hpp>
+#include <ql/utilities/null_deleter.hpp>
 #include <utility>
 
 namespace QuantLib {
@@ -1140,6 +1142,111 @@ namespace QuantLib {
         return yieldValueBasisPoint(leg, InterestRate(yield, dc, comp, freq),
                                     includeSettlementDateFlows,
                                     settlementDate, npvDate);
+    }
+
+    namespace {
+
+        const Spread basisPoint = 1.0e-4;
+
+        Handle<YieldTermStructure> nonOwningHandle(const YieldTermStructure& curve) {
+            return Handle<YieldTermStructure>(ext::shared_ptr<YieldTermStructure>(
+                const_cast<YieldTermStructure*>(&curve), null_deleter()));
+        }
+
+    }
+
+    Real CashFlows::basisPointValue(const Leg& leg,
+                                    const YieldTermStructure& discountCurve,
+                                    const ext::optional<bool>& includeSettlementDateFlows,
+                                    Date settlementDate,
+                                    Date npvDate) {
+        if (leg.empty())
+            return 0.0;
+
+        if (settlementDate == Date())
+            settlementDate = Settings::instance().evaluationDate();
+
+        if (npvDate == Date())
+            npvDate = settlementDate;
+
+        auto shift = ext::make_shared<SimpleQuote>(0.0);
+        ZeroSpreadedTermStructure shiftedCurve(nonOwningHandle(discountCurve),
+                                               Handle<Quote>(shift));
+        shiftedCurve.enableExtrapolation(discountCurve.allowsExtrapolation());
+
+        shift->setValue(basisPoint);
+        Real npvUp = npv(leg, shiftedCurve, includeSettlementDateFlows,
+                         settlementDate, npvDate);
+        shift->setValue(-basisPoint);
+        Real npvDown = npv(leg, shiftedCurve, includeSettlementDateFlows,
+                           settlementDate, npvDate);
+
+        return 0.5 * (npvUp - npvDown);
+    }
+
+    std::vector<Real>
+    CashFlows::keyRateBasisPointValues(const Leg& leg,
+                                       const YieldTermStructure& discountCurve,
+                                       const std::vector<Date>& keyDates,
+                                       const ext::optional<bool>& includeSettlementDateFlows,
+                                       Date settlementDate,
+                                       Date npvDate) {
+        QL_REQUIRE(!keyDates.empty(), "no key dates given");
+        QL_REQUIRE(keyDates.front() >= discountCurve.referenceDate(),
+                   "first key date (" << keyDates.front()
+                   << ") is before the curve reference date ("
+                   << discountCurve.referenceDate() << ")");
+        for (Size i = 1; i < keyDates.size(); ++i)
+            QL_REQUIRE(keyDates[i] > keyDates[i-1],
+                       "key dates must be sorted and unique: "
+                       << keyDates[i-1] << " is followed by " << keyDates[i]);
+
+        if (leg.empty())
+            return std::vector<Real>(keyDates.size(), 0.0);
+
+        if (keyDates.size() == 1)
+            return { basisPointValue(leg, discountCurve,
+                                     includeSettlementDateFlows,
+                                     settlementDate, npvDate) };
+
+        if (settlementDate == Date())
+            settlementDate = Settings::instance().evaluationDate();
+
+        if (npvDate == Date())
+            npvDate = settlementDate;
+
+        QL_REQUIRE(discountCurve.allowsExtrapolation() ||
+                   maturityDate(leg) <= discountCurve.maxDate(),
+                   "cash flows (maturity " << maturityDate(leg)
+                   << ") extend beyond the discount curve max date ("
+                   << discountCurve.maxDate() << ")");
+
+        std::vector<ext::shared_ptr<SimpleQuote>> shifts;
+        std::vector<Handle<Quote>> shiftHandles;
+        shifts.reserve(keyDates.size());
+        shiftHandles.reserve(keyDates.size());
+        for (Size i = 0; i < keyDates.size(); ++i) {
+            shifts.push_back(ext::make_shared<SimpleQuote>(0.0));
+            shiftHandles.emplace_back(shifts.back());
+        }
+
+        PiecewiseZeroSpreadedTermStructure shiftedCurve(nonOwningHandle(discountCurve),
+                                                        shiftHandles, keyDates);
+        // the shifts are held flat after the last key date
+        shiftedCurve.enableExtrapolation();
+
+        std::vector<Real> result(keyDates.size());
+        for (Size i = 0; i < keyDates.size(); ++i) {
+            shifts[i]->setValue(basisPoint);
+            Real npvUp = npv(leg, shiftedCurve, includeSettlementDateFlows,
+                             settlementDate, npvDate);
+            shifts[i]->setValue(-basisPoint);
+            Real npvDown = npv(leg, shiftedCurve, includeSettlementDateFlows,
+                               settlementDate, npvDate);
+            shifts[i]->setValue(0.0);
+            result[i] = 0.5 * (npvUp - npvDown);
+        }
+        return result;
     }
 
     // Z-spread utility functions

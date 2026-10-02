@@ -209,6 +209,39 @@ namespace QuantLib {
                             Date settlementDate = Date(),
                             Date npvDate = Date(),
                             Real npv = Null<Real>());
+        //! Basis-point value of the cash flows w.r.t. the discount curve.
+        /*! The result is the change in NPV due to a parallel
+            1-basis-point shift of the continuously-compounded zero
+            rates of the given term structure.  It is estimated by
+            symmetric (central) finite differences.
+        */
+        static Real basisPointValue(const Leg& leg,
+                                    const YieldTermStructure& discountCurve,
+                                    const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                                    Date settlementDate = Date(),
+                                    Date npvDate = Date());
+        //! Key-rate basis-point values of the cash flows.
+        /*! The i-th result is the change in NPV due to a
+            1-basis-point shift of the continuously-compounded zero
+            rate of the given term structure at the i-th key date.
+            The shift decreases linearly in time to zero at the
+            adjacent key dates and is held flat before the first and
+            after the last key date.  Since these shifts add up to a
+            parallel shift, the key-rate values add up (to first
+            order) to the basisPointValue() for the same curve.  Each
+            value is estimated by symmetric (central) finite
+            differences.
+
+            \note Only the discounting is affected; any forecast curve
+                  used by floating-rate coupons is not shifted.
+        */
+        static std::vector<Real>
+        keyRateBasisPointValues(const Leg& leg,
+                                const YieldTermStructure& discountCurve,
+                                const std::vector<Date>& keyDates,
+                                const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt,
+                                Date settlementDate = Date(),
+                                Date npvDate = Date());
         //@}
 
         //! \name Yield (a.k.a. Internal Rate of Return, i.e. IRR) functions

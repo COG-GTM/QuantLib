@@ -33,6 +33,7 @@
 #include <ql/interestrate.hpp>
 #include <ql/instruments/bond.hpp>
 #include <ql/shared_ptr.hpp>
+#include <vector>
 
 namespace QuantLib {
 
@@ -114,6 +115,17 @@ namespace QuantLib {
         static Real bps(const Bond& bond,
                         const YieldTermStructure& discountCurve,
                         Date settlementDate = Date());
+        static Real basisPointValue(const Bond& bond,
+                                    const YieldTermStructure& discountCurve,
+                                    Date settlementDate = Date());
+        /*! The key dates are obtained by adding the given tenors
+            to the reference date of the discount curve.
+        */
+        static std::vector<Real>
+        keyRateBasisPointValues(const Bond& bond,
+                                const YieldTermStructure& discountCurve,
+                                const std::vector<Period>& keyTenors,
+                                Date settlementDate = Date());
 
         static Rate atmRate(const Bond& bond,
                             const YieldTermStructure& discountCurve,
