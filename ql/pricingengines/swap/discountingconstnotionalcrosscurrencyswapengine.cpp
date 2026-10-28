@@ -22,12 +22,13 @@
 #include <ql/exchangerate.hpp>
 #include <ql/utilities/dataformatters.hpp>
 #include <utility>
+#include <optional>
 
 namespace QuantLib {
 
 DiscountingConstNotionalCrossCurrencySwapEngine::DiscountingConstNotionalCrossCurrencySwapEngine(Currency  domesticCcy, const Handle<YieldTermStructure>& domesticCcyDiscountcurve,
                                        Currency  foreignCcy, const Handle<YieldTermStructure>& foreignCcyDiscountcurve,
-                                       const Handle<Quote>& spotFX, ext::optional<bool> includeSettlementDateFlows,
+                                       const Handle<Quote>& spotFX, std::optional<bool> includeSettlementDateFlows,
                                        const Date& settlementDate, const Date& npvDate, const Date& spotFXSettleDate)
     : domesticCcy_(std::move(domesticCcy)), domesticCcyDiscountcurve_(domesticCcyDiscountcurve), foreignCcy_(std::move(foreignCcy)),
       foreignCcyDiscountcurve_(foreignCcyDiscountcurve), spotFX_(spotFX),

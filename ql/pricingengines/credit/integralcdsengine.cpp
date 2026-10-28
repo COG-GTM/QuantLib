@@ -25,6 +25,7 @@
 #include <ql/termstructures/yieldtermstructure.hpp>
 #include <ql/optional.hpp>
 #include <utility>
+#include <optional>
 
 namespace QuantLib {
 
@@ -32,7 +33,7 @@ namespace QuantLib {
                                          Handle<DefaultProbabilityTermStructure> probability,
                                          Real recoveryRate,
                                          Handle<YieldTermStructure> discountCurve,
-                                         const ext::optional<bool>& includeSettlementDateFlows)
+                                         const std::optional<bool>& includeSettlementDateFlows)
     : integrationStep_(step), probability_(std::move(probability)), recoveryRate_(recoveryRate),
       discountCurve_(std::move(discountCurve)),
       includeSettlementDateFlows_(includeSettlementDateFlows) {
