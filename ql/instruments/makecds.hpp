@@ -27,7 +27,6 @@
 
 #include <ql/instruments/creditdefaultswap.hpp>
 #include <ql/time/daycounters/actual360.hpp>
-#include <ql/optional.hpp>
 #include <optional>
 
 namespace QuantLib {

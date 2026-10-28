@@ -27,7 +27,6 @@
 #include <ql/termstructures/yieldtermstructure.hpp>
 #include <ql/experimental/credit/gaussianlhplossmodel.hpp>
 #include <ql/experimental/credit/midpointcdoengine.hpp>
-#include <ql/optional.hpp>
 #include <optional>
 
 using namespace std;

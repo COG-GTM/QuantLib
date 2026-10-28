@@ -33,7 +33,6 @@
 #include <ql/currencies/europe.hpp>
 #include <ql/currencies/oceania.hpp>
 #include <ql/utilities/null.hpp>
-#include <ql/optional.hpp>
 #include <optional>
 
 namespace QuantLib {

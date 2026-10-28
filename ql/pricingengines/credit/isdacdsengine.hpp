@@ -28,7 +28,6 @@
 #include <ql/instruments/creditdefaultswap.hpp>
 #include <ql/termstructures/yieldtermstructure.hpp>
 #include <ql/termstructures/defaulttermstructure.hpp>
-#include <ql/optional.hpp>
 #include <optional>
 
 namespace QuantLib {

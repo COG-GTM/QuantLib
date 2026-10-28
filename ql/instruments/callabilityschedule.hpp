@@ -30,7 +30,6 @@
 #include <ql/patterns/visitor.hpp>
 #include <ql/utilities/null.hpp>
 #include <ql/shared_ptr.hpp>
-#include <ql/optional.hpp>
 #include <vector>
 #include <optional>
 
