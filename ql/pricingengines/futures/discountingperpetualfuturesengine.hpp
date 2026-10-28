@@ -27,7 +27,7 @@
 #include <ql/instruments/perpetualfutures.hpp>
 #include <ql/termstructures/yieldtermstructure.hpp>
 #include <ql/handle.hpp>
-#include <ql/optional.hpp>
+#include <optional>
 #include <ql/math/interpolation.hpp>
 
 namespace QuantLib {
