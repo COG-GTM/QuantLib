@@ -24,7 +24,6 @@
 #include <ql/money.hpp>
 #include <ql/numericalmethod.hpp>
 #include <ql/option.hpp>
-#include <ql/optional.hpp>
 #include <ql/payoff.hpp>
 #include <ql/position.hpp>
 #include <ql/prices.hpp>
