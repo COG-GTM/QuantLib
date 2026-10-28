@@ -41,7 +41,7 @@
 #include <string>
 #include <utility>
 #include <vector>
-#include <ql/optional.hpp>
+#include <optional>
 
 using namespace QuantLib;
 using namespace boost::unit_test_framework;
@@ -391,7 +391,7 @@ BOOST_AUTO_TEST_CASE(testUpfrontBootstrap) {
     // This checks that UpfrontCdsHelper::impliedQuote() didn't
     // override the flag permanently; after the bootstrap, it should
     // go back to its previous value.
-    ext::optional<bool> flag = Settings::instance().includeTodaysCashFlows();
+    std::optional<bool> flag = Settings::instance().includeTodaysCashFlows();
     if (flag != false)
         BOOST_ERROR("Cash-flow settings improperly modified");
 }

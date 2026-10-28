@@ -60,7 +60,7 @@
 
 #include <iostream>
 #include <iomanip>
-#include <ql/optional.hpp>
+#include <optional>
 
 using namespace QuantLib;
 using namespace boost::unit_test_framework;
@@ -457,8 +457,8 @@ BOOST_AUTO_TEST_CASE(testBootstrapWithCustomPricer) {
                                                       Pillar::LastRelevantDate,
                                                       Date(),
                                                       averagingMethod,
-                                                      ext::nullopt,
-                                                      ext::nullopt,
+                                                      std::nullopt,
+                                                      std::nullopt,
                                                       Calendar(),
                                                       Null<Natural>(),
                                                       0,
@@ -528,8 +528,8 @@ void testBootstrapWithLookback(Natural lookbackDays,
                                                       Pillar::LastRelevantDate,
                                                       Date(),
                                                       RateAveraging::Compound,
-                                                      ext::nullopt,
-                                                      ext::nullopt,
+                                                      std::nullopt,
+                                                      std::nullopt,
                                                       Calendar(),
                                                       lookbackDays,
                                                       lockoutDays,
@@ -764,7 +764,7 @@ for (auto & i : data) {
                                   false, 0,
                                   Following, Annual, calendar, 0*Days, 0.0,
                                   Pillar::LastRelevantDate, Date(),
-                                  RateAveraging::Compound, ext::nullopt, ext::nullopt,
+                                  RateAveraging::Compound, std::nullopt, std::nullopt,
                                   calendar, Null<Natural>(), 0, false,
                                   ext::shared_ptr<FloatingRateCouponPricer>(),
                                   DateGeneration::Backward, calendar));
