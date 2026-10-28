@@ -157,6 +157,7 @@ quantlib.hpp: Makefile.am
 			quantlib.hpp)      continue;; \
 			version.hpp)       continue;; \
 			functional.hpp)       continue;; \
+			optional.hpp)       continue;; \
 			tuple.hpp)       continue;; \
 			grid.hpp)       continue;; \
 			*.hpp)             ;; \

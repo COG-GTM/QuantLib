@@ -156,7 +156,7 @@ jobs:
             tag: oracular
             cc: gcc
             cxx: g++
-            configureflags: --enable-std-pointers --disable-std-any --disable-std-optional
+            configureflags: --enable-std-pointers --disable-std-any
           - name: "OpenMP enabled"
             shortname: openmp
             tag: rolling

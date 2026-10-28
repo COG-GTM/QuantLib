@@ -18,6 +18,7 @@ function(generate_ql_header source_dir binary_dir)
     list(FILTER children_hpp EXCLUDE REGEX "version.hpp")
 
     list(FILTER children_hpp EXCLUDE REGEX "functional.hpp")
+    list(FILTER children_hpp EXCLUDE REGEX "optional.hpp")
     list(FILTER children_hpp EXCLUDE REGEX "tuple.hpp")
     list(FILTER children_hpp EXCLUDE REGEX "ql/grid.hpp")
 
