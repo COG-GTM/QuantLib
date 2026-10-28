@@ -30,6 +30,7 @@
 #include <ql/optional.hpp>
 #include <ql/patterns/lazyobject.hpp>
 #include <vector>
+#include <optional>
 
 namespace QuantLib {
 
@@ -49,7 +50,7 @@ namespace QuantLib {
             Settings::includeTodaysCashflows in account
         */
         bool hasOccurred(const Date& refDate = Date(),
-                         ext::optional<bool> includeRefDate = ext::nullopt) const override;
+                         std::optional<bool> includeRefDate = std::nullopt) const override;
         //@}
         //! \name LazyObject interface
         //@{
