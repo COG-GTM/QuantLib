@@ -30,7 +30,7 @@
 #include <ql/termstructures/volatility/capfloor/capfloortermvolsurface.hpp>
 #include <ql/termstructures/volatility/volatilitytype.hpp>
 #include <ql/termstructures/yieldtermstructure.hpp>
-#include <ql/optional.hpp>
+#include <optional>
 
 namespace QuantLib {
 
@@ -65,7 +65,7 @@ namespace QuantLib {
         ext::shared_ptr<IborIndex> iborIndex() const;
         Real displacement() const override;
         VolatilityType volatilityType() const override;
-        ext::optional<Period> optionletFrequency() const;
+        std::optional<Period> optionletFrequency() const;
 
       protected:
         OptionletStripper(const ext::shared_ptr<CapFloorTermVolSurface>&,
@@ -73,7 +73,7 @@ namespace QuantLib {
                           Handle<YieldTermStructure> discount = {},
                           VolatilityType type = ShiftedLognormal,
                           Real displacement = 0.0,
-                          ext::optional<Period> optionletFrequency = ext::nullopt);
+                          std::optional<Period> optionletFrequency = std::nullopt);
         ext::shared_ptr<CapFloorTermVolSurface> termVolSurface_;
         ext::shared_ptr<IborIndex> iborIndex_;
         Handle<YieldTermStructure> discount_;
@@ -93,7 +93,7 @@ namespace QuantLib {
         std::vector<Period> capFloorLengths_;
         const VolatilityType volatilityType_;
         const Real displacement_;
-        ext::optional<Period> optionletFrequency_;
+        std::optional<Period> optionletFrequency_;
     };
 
 }
