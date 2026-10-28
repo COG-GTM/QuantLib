@@ -24,6 +24,7 @@
 #include <ql/cashflows/overnightindexedcoupon.hpp>
 #include <ql/instruments/overnightindexedswap.hpp>
 #include <utility>
+#include <ql/optional.hpp>
 
 namespace QuantLib {
 

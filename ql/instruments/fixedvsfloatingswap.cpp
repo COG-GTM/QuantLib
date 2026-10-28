@@ -27,6 +27,7 @@
 #include <ql/instruments/fixedvsfloatingswap.hpp>
 #include <ql/termstructures/yieldtermstructure.hpp>
 #include <utility>
+#include <ql/optional.hpp>
 
 namespace QuantLib {
 

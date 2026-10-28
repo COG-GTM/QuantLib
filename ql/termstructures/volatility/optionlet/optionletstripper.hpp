@@ -30,6 +30,7 @@
 #include <ql/termstructures/volatility/capfloor/capfloortermvolsurface.hpp>
 #include <ql/termstructures/volatility/volatilitytype.hpp>
 #include <ql/termstructures/yieldtermstructure.hpp>
+#include <ql/optional.hpp>
 
 namespace QuantLib {
 

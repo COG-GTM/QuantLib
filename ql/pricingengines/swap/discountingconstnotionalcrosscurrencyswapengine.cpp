@@ -22,6 +22,7 @@
 #include <ql/exchangerate.hpp>
 #include <ql/utilities/dataformatters.hpp>
 #include <utility>
+#include <ql/optional.hpp>
 
 namespace QuantLib {
 

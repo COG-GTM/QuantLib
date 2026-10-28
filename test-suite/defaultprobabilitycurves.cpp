@@ -41,6 +41,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <ql/optional.hpp>
 
 using namespace QuantLib;
 using namespace boost::unit_test_framework;

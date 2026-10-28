@@ -34,6 +34,7 @@
 #include <ql/cashflows/rateaveraging.hpp>
 #include <ql/indexes/iborindex.hpp>
 #include <ql/time/schedule.hpp>
+#include <ql/optional.hpp>
 
 
 namespace QuantLib {

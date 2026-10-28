@@ -60,6 +60,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <ql/optional.hpp>
 
 using namespace QuantLib;
 using namespace boost::unit_test_framework;

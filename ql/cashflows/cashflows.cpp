@@ -30,6 +30,7 @@
 #include <ql/termstructures/yield/flatforward.hpp>
 #include <ql/termstructures/yield/zerospreadedtermstructure.hpp>
 #include <utility>
+#include <ql/optional.hpp>
 
 namespace QuantLib {
 
