@@ -27,7 +27,7 @@
 #include <ql/instruments/fixedvsfloatingswap.hpp>
 #include <ql/termstructures/yieldtermstructure.hpp>
 #include <utility>
-#include <ql/optional.hpp>
+#include <optional>
 
 namespace QuantLib {
 
@@ -41,7 +41,7 @@ namespace QuantLib {
                                              ext::shared_ptr<IborIndex> iborIndex,
                                              Spread spread,
                                              DayCounter floatingDayCount,
-                                             ext::optional<BusinessDayConvention> paymentConvention,
+                                             std::optional<BusinessDayConvention> paymentConvention,
                                              Integer paymentLag,
                                              const Calendar& paymentCalendar)
     : Swap(2), type_(type), fixedNominals_(std::move(fixedNominals)), fixedSchedule_(std::move(fixedSchedule)),

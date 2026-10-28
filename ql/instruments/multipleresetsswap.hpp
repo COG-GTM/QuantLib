@@ -27,7 +27,7 @@
 #include <ql/cashflows/rateaveraging.hpp>
 #include <ql/instruments/fixedvsfloatingswap.hpp>
 #include <ql/time/schedule.hpp>
-#include <ql/optional.hpp>
+#include <optional>
 
 namespace QuantLib {
 
@@ -50,7 +50,7 @@ namespace QuantLib {
                            Size resetsPerCoupon,
                            Spread spread = 0.0,
                            RateAveraging::Type averagingMethod = RateAveraging::Compound,
-                           ext::optional<BusinessDayConvention> paymentConvention = ext::nullopt,
+                           std::optional<BusinessDayConvention> paymentConvention = std::nullopt,
                            Integer paymentLag = 0,
                            const Calendar& paymentCalendar = Calendar());
 
