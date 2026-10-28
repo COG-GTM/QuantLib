@@ -21,6 +21,7 @@
 #include <ql/cashflow.hpp>
 #include <ql/settings.hpp>
 #include <ql/patterns/visitor.hpp>
+#include <ql/optional.hpp>
 
 namespace QuantLib {
 

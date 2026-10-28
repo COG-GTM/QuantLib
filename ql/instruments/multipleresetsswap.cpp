@@ -20,6 +20,7 @@
 #include <ql/cashflows/multipleresetscoupon.hpp>
 #include <ql/instruments/multipleresetsswap.hpp>
 #include <utility>
+#include <ql/optional.hpp>
 
 namespace QuantLib {
 

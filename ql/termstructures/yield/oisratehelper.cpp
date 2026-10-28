@@ -26,6 +26,7 @@
 #include <ql/termstructures/yield/oisratehelper.hpp>
 #include <ql/utilities/null_deleter.hpp>
 #include <utility>
+#include <ql/optional.hpp>
 
 namespace QuantLib {
 

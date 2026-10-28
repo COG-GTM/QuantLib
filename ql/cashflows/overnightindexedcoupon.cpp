@@ -33,6 +33,7 @@
 #include <utility>
 #include <algorithm>
 #include <type_traits>
+#include <ql/optional.hpp>
 
 using std::vector;
 

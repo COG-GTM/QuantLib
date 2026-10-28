@@ -25,6 +25,7 @@
 #include <ql/version.hpp>
 #include <iostream>
 #include <iomanip>
+#include <ql/optional.hpp>
 
 using namespace boost::unit_test;
 

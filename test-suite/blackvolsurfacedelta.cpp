@@ -29,6 +29,7 @@
 #include <ql/termstructures/yield/flatforward.hpp>
 #include <ql/time/calendars/target.hpp>
 #include <ql/time/daycounters/actualactual.hpp>
+#include <ql/optional.hpp>
 
 using namespace boost::unit_test_framework;
 using namespace QuantLib;

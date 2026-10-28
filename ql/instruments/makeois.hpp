@@ -29,6 +29,7 @@
 #include <ql/instruments/overnightindexedswap.hpp>
 #include <ql/time/dategenerationrule.hpp>
 #include <ql/termstructures/yieldtermstructure.hpp>
+#include <ql/optional.hpp>
 
 namespace QuantLib {
 
