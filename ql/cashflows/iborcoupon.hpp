@@ -34,6 +34,7 @@
 #include <ql/patterns/singleton.hpp>
 #include <ql/time/schedule.hpp>
 #include <ql/optional.hpp>
+#include <optional>
 
 namespace QuantLib {
 
@@ -159,7 +160,7 @@ namespace QuantLib {
                                     BusinessDayConvention,
                                     bool endOfMonth = false);
         IborLeg& withFixingConvention(BusinessDayConvention);
-        IborLeg& withIndexedCoupons(ext::optional<bool> b = true);
+        IborLeg& withIndexedCoupons(std::optional<bool> b = true);
         IborLeg& withAtParCoupons(bool b = true);
         operator Leg() const;
 
@@ -181,7 +182,7 @@ namespace QuantLib {
         Calendar exCouponCalendar_;
         BusinessDayConvention exCouponAdjustment_ = Unadjusted;
         bool exCouponEndOfMonth_ = false;
-        ext::optional<bool> useIndexedCoupons_;
+        std::optional<bool> useIndexedCoupons_;
     };
 
 }
