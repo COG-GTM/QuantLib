@@ -24,7 +24,7 @@
 #ifndef quantlib_montecarlo_catbond_engine_hpp
 #define quantlib_montecarlo_catbond_engine_hpp
 
-#include <ql/optional.hpp>
+#include <optional>
 #include <ql/experimental/catbonds/catbond.hpp>
 
 namespace QuantLib {
@@ -36,7 +36,7 @@ namespace QuantLib {
       explicit MonteCarloCatBondEngine(
           ext::shared_ptr<CatRisk> catRisk,
           Handle<YieldTermStructure> discountCurve = Handle<YieldTermStructure>(),
-          const ext::optional<bool>& includeSettlementDateFlows = ext::nullopt);
+          const std::optional<bool>& includeSettlementDateFlows = std::nullopt);
       void calculate() const override;
       Handle<YieldTermStructure> discountCurve() const { return discountCurve_; }
     protected:
@@ -57,7 +57,7 @@ namespace QuantLib {
     private:
       ext::shared_ptr<CatRisk> catRisk_;
       Handle<YieldTermStructure> discountCurve_;
-      ext::optional<bool> includeSettlementDateFlows_;
+      std::optional<bool> includeSettlementDateFlows_;
     };
 
 }
