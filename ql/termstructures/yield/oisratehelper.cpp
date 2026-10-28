@@ -26,6 +26,7 @@
 #include <ql/termstructures/yield/oisratehelper.hpp>
 #include <ql/utilities/null_deleter.hpp>
 #include <utility>
+#include <optional>
 
 namespace QuantLib {
 
@@ -45,8 +46,8 @@ namespace QuantLib {
         Pillar::Choice pillar,
         Date customPillarDate,
         RateAveraging::Type averagingMethod,
-        ext::optional<bool> endOfMonth,
-        ext::optional<Frequency> fixedPaymentFrequency,
+        std::optional<bool> endOfMonth,
+        std::optional<Frequency> fixedPaymentFrequency,
         Calendar fixedCalendar,
         Natural lookbackDays,
         Natural lockoutDays,
@@ -83,8 +84,8 @@ namespace QuantLib {
         Pillar::Choice pillar,
         Date customPillarDate,
         RateAveraging::Type averagingMethod,
-        ext::optional<bool> endOfMonth,
-        ext::optional<Frequency> fixedPaymentFrequency,
+        std::optional<bool> endOfMonth,
+        std::optional<Frequency> fixedPaymentFrequency,
         Calendar fixedCalendar,
         Natural lookbackDays,
         Natural lockoutDays,

@@ -27,8 +27,8 @@
 #include <ql/cashflows/iborcoupon.hpp>
 #include <ql/indexes/interestrateindex.hpp>
 #include <ql/termstructures/yieldtermstructure.hpp>
-#include <ql/optional.hpp>
 #include <utility>
+#include <optional>
 
 namespace QuantLib {
 
@@ -264,7 +264,7 @@ namespace QuantLib {
         return *this;
     }
 
-    IborLeg& IborLeg::withIndexedCoupons(ext::optional<bool> b) {
+    IborLeg& IborLeg::withIndexedCoupons(std::optional<bool> b) {
         useIndexedCoupons_ = b;
         return *this;
     }

@@ -34,6 +34,7 @@
 #include <ql/cashflows/rateaveraging.hpp>
 #include <ql/indexes/iborindex.hpp>
 #include <ql/time/schedule.hpp>
+#include <optional>
 
 
 namespace QuantLib {
@@ -235,7 +236,7 @@ namespace QuantLib {
         OvernightLeg& withNakedOption(bool nakedOption);
         OvernightLeg& withDailyCapFloor(bool dailyCapFloor = true);
         OvernightLeg& inArrears(bool inArrears);
-        OvernightLeg& withLastRecentPeriod(const ext::optional<Period>& lastRecentPeriod);
+        OvernightLeg& withLastRecentPeriod(const std::optional<Period>& lastRecentPeriod);
         OvernightLeg& withLastRecentPeriodCalendar(const Calendar& lastRecentPeriodCalendar);
         OvernightLeg& withPaymentDates(const std::vector<Date>& paymentDates);
         OvernightLeg& withCouponPricer(const ext::shared_ptr<OvernightIndexedCouponPricer>& couponPricer);
@@ -261,7 +262,7 @@ namespace QuantLib {
         bool nakedOption_ = false;
         bool dailyCapFloor_ = false;
         bool inArrears_ = true;
-        ext::optional<Period> lastRecentPeriod_;
+        std::optional<Period> lastRecentPeriod_;
         Calendar lastRecentPeriodCalendar_;
         std::vector<Date> paymentDates_;
         ext::shared_ptr<OvernightIndexedCouponPricer> couponPricer_;
